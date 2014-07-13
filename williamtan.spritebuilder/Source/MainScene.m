@@ -8,11 +8,12 @@
 
 #import "MainScene.h"
 
-@implementation MainScene
+@implementation MainScene{
+}
 
 - (void)play {
     NSLog(@"play activated");
-    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
+   CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
 }
 @end

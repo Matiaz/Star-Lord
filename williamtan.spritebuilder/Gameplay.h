@@ -7,6 +7,9 @@
 //
 
 #import "CCScene.h"
-@interface Gameplay : CCScene 
+@interface Gameplay : CCNode <CCPhysicsCollisionDelegate> {
+int ACCEL;
+}
+-(void) starRemoved;
 
 @end

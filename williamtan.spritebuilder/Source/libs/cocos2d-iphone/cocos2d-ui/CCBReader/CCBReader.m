@@ -1,4 +1,4 @@
-/*
+ /*
  * SpriteBuilder: http://www.spritebuilder.org
  *
  * Copyright (c) 2012 Zynga Inc.

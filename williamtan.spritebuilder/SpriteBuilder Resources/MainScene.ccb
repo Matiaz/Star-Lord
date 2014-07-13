@@ -369,7 +369,7 @@
 		<key>customClass</key>
 		<string>MainScene</string>
 		<key>displayName</key>
-		<string>CCNode</string>
+		<string>MainScene</string>
 		<key>memberVarAssignmentName</key>
 		<string></string>
 		<key>memberVarAssignmentType</key>
@@ -436,6 +436,8 @@
 				</array>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>
