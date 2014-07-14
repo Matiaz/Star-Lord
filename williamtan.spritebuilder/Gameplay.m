@@ -28,7 +28,7 @@
     _spawnStarTime = 60;
     _currentTime = 0;
     _starCount = 1;
-  
+    
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
@@ -74,7 +74,8 @@
     }
 }
 
-/*
+
+
 -(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA wildcard:(CCNode *)nodeB
 {
     CCLOG(@"Something collided with a star!");
@@ -85,13 +86,12 @@
         [[_physicsNode space] addPostStepBlock:^{
             [self starRemoved:nodeA];
         } key:nodeA];
-}
-    
-    - (void) starRemoved:(CCNode *)Star {
-        [Star removeFromParent];
     }
-*/
+}
 
+- (void) starRemoved:(CCNode *)Star {
+    [Star removeFromParent];
+}
 
 
 - (void)update:(CCTime)delta {
