@@ -18,9 +18,12 @@
     CCPhysicsNode *_physicsNode;
     float viewHeight, viewWidth;
     Star *_star;
-    int _currentTime, _starCount, MAXSTARS, _spawnStarTime, _lastStarX, _lastStarY, _score;
+    int _starCount, MAXSTARS, _lastStarX, _lastStarY, _score;
+    long _currentTime, _spawnStarTime;
     CCLabelTTF *_scoreLabel;
 }
+
+#pragma mark Game Methods
 
 - (void)didLoadFromCCB {
     //Determines how fast the spaceship moves.
@@ -34,25 +37,25 @@
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
-        _physicsNode.debugDraw = TRUE;
+   // _physicsNode.debugDraw = TRUE;
     _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
     
     //Determines the size of the game.
     _motionManager = [[CMMotionManager alloc] init];
     viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
     viewWidth = [[CCDirector sharedDirector] viewSize].width;   //320
-    NSLog(@"%f",viewHeight);
+    
 }
 
 - (void)createStars{
     int x,y;
-    _currentTime++;
+   
     
-    if((_currentTime/_spawnStarTime == 1) && (_starCount <= MAXSTARS)){
+    if((_currentTime / _spawnStarTime ==1) && (_starCount <= MAXSTARS)){
         x = random() % 263 +30; // max x value is 293
         x = clampf(x, 30, viewWidth-28);
         
-        y = random() % 548 + 20; // max y value is 568568
+        y = random() % 548 + 20; // max y value is 568
         y = clampf(y, 20, viewHeight-21);
         
         if((abs(_lastStarX - x)) > 100 && (abs(_lastStarY - y) > 200)){
@@ -74,12 +77,19 @@
 
 - (void) createAsteroids{
     if(_currentTime < 1000){
-        
+        [self setUpAsteroids];
     }
     
 }
 
+- (void) setUpAsteroids{
+    
+}
+
 - (void)update:(CCTime)delta {
+    _currentTime++;
+    NSLog(@"_currentTime = %ld", _currentTime);
+    
     //Accelerometer code.
     CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
     CMAcceleration acceleration = accelerometerData.acceleration;
@@ -95,36 +105,32 @@
     [self createAsteroids];
     
     _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
+    
 }
 
 #pragma mark Collision Methods
 
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA wildcard:(CCNode *)nodeB
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA Ship:(CCNode *)nodeB
 {
     CCLOG(@"Something collided with a star!");
-   // float energy = [pair totalKineticEnergy];
-    
-    // if energy is large enough, remove the seal
-    //if (energy > 1.f) {
-        [[_physicsNode space] addPostStepBlock:^{
-            [self starRemoved:nodeA];
-        } key:nodeA];
-    //}
+    [[_physicsNode space] addPostStepBlock:^{
+        [self starRemoved:nodeA];
+    } key:nodeA];
 }
 
 - (void) starRemoved:(CCNode *)Star {
-    [Star removeFromParent];
     _starCount--;
     _score++;
     
-    // load particle effect
+   // load particle effect
     CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
     // make the particle effect clean itself up, once it is completed
     explosion.autoRemoveOnFinish = TRUE;
     // place the particle effect on the seals position
-    explosion.position = Star.position;
+   explosion.position = Star.position;
     // add the particle effect to the same node the seal is on
     [Star.parent addChild:explosion];
+    [Star removeFromParent];
 }
 
 #pragma mark Accelerometer Methods
@@ -144,18 +150,22 @@
 #pragma mark UI Methods
 - (void)pause
 {
-    [self unschedule:@selector(update)];
+   
 }
 
 - (void)play
 {
-    [self schedule:@selector(update) interval:0.5f];
+    //[self schedule:@selector(update) interval:0.5f];
 }
 
 - (void)openSettings {
     NSLog(@"Settings activated");
     CCScene *settingsScene = [CCBReader loadAsScene:@"Settings"];
-    [[CCDirector sharedDirector] replaceScene:settingsScene];
+    [[CCDirector sharedDirector] pushScene:settingsScene];
 }
+
+#pragma mark Parallax Methods
+
+
 
 @end

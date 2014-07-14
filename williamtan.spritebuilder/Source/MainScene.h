@@ -8,7 +8,9 @@
 
 #import "CCNode.h"
 
-@interface MainScene : CCScene
-
+@interface MainScene : CCScene{
+    
+    CCScene *gameplayScene;
+}
 
 @end

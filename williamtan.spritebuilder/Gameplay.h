@@ -8,7 +8,7 @@
 
 #import "CCScene.h"
 @interface Gameplay : CCNode <CCPhysicsCollisionDelegate> {
-int ACCEL;
+    int ACCEL;
 }
 
 @end

@@ -9,5 +9,7 @@
 #import "Ship.h"
 
 @implementation Ship
-
+- (void) didLoadFromCCB{
+    self.physicsBody.collisionType = @"Ship";
+}
 @end

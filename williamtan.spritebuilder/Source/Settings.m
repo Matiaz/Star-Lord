@@ -17,7 +17,7 @@
 }
 
 - (void)openGameplay{
-   // [[CCDirector sharedDirector] replaceScene:gameplayScene];
+     [[CCDirector sharedDirector] popScene];
 }
 
 @end
