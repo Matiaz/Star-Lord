@@ -51,7 +51,7 @@
     int x,y;
    
     
-    if((_currentTime / _spawnStarTime ==1) && (_starCount <= MAXSTARS)){
+    if((_currentTime == _spawnStarTime) && (_starCount <= MAXSTARS)){
         x = random() % 263 +30; // max x value is 293
         x = clampf(x, 30, viewWidth-28);
         
@@ -88,6 +88,10 @@
 
 - (void)update:(CCTime)delta {
     _currentTime++;
+    if(_currentTime > _spawnStarTime){
+        _currentTime = _spawnStarTime - 60;
+    }
+    
     NSLog(@"_currentTime = %ld", _currentTime);
     
     //Accelerometer code.
