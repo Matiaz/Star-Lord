@@ -12,6 +12,7 @@
 		885468B819706AF000AA122E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885468B719706AF000AA122E /* CoreMotion.framework */; };
 		885468BC1970751C00AA122E /* Ship.m in Sources */ = {isa = PBXBuildFile; fileRef = 885468BB1970751C00AA122E /* Ship.m */; };
 		885468C31970DB0600AA122E /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 885468C21970DB0600AA122E /* Settings.m */; };
+		888234D219744CC30080042B /* Asteriod1.m in Sources */ = {isa = PBXBuildFile; fileRef = 888234D119744CC30080042B /* Asteriod1.m */; };
 		88A205D7197205530015925F /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A205D6197205530015925F /* Star.m */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
@@ -69,6 +70,8 @@
 		885468BB1970751C00AA122E /* Ship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Ship.m; path = Source/Ship.m; sourceTree = "<group>"; };
 		885468C11970DB0600AA122E /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = Source/Settings.h; sourceTree = "<group>"; };
 		885468C21970DB0600AA122E /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = Source/Settings.m; sourceTree = "<group>"; };
+		888234D019744CC30080042B /* Asteriod1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asteriod1.h; path = Source/Asteriod1.h; sourceTree = "<group>"; };
+		888234D119744CC30080042B /* Asteriod1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asteriod1.m; path = Source/Asteriod1.m; sourceTree = "<group>"; };
 		88A205D5197205530015925F /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Star.h; path = Source/Star.h; sourceTree = "<group>"; };
 		88A205D6197205530015925F /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Star.m; path = Source/Star.m; sourceTree = "<group>"; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 				B7378993180767190076A88C /* MainScene.m */,
 				88011D61196DBD3100FE3CB8 /* Gameplay.h */,
 				88011D62196DBD3100FE3CB8 /* Gameplay.m */,
+				888234D019744CC30080042B /* Asteriod1.h */,
+				888234D119744CC30080042B /* Asteriod1.m */,
 				88A205D5197205530015925F /* Star.h */,
 				88A205D6197205530015925F /* Star.m */,
 				885468C11970DB0600AA122E /* Settings.h */,
@@ -366,6 +371,7 @@
 			files = (
 				B737893F1807617C0076A88C /* AppDelegate.m in Sources */,
 				88A205D7197205530015925F /* Star.m in Sources */,
+				888234D219744CC30080042B /* Asteriod1.m in Sources */,
 				88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				885468BC1970751C00AA122E /* Ship.m in Sources */,

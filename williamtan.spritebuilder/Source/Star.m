@@ -10,6 +10,6 @@
 
 
 -(void)didLoadFromCCB{
-  //  self.physicsBody.collisionType = @"Star";
+    self.physicsBody.collisionType = @"Star";
 }
 @end

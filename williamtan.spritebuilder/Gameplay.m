@@ -18,7 +18,8 @@
     CCPhysicsNode *_physicsNode;
     float viewHeight, viewWidth;
     Star *_star;
-    int _currentTime, _starCount, MAXSTARS, _spawnStarTime, _lastStarX, _lastStarY;
+    int _currentTime, _starCount, MAXSTARS, _spawnStarTime, _lastStarX, _lastStarY, _score;
+    CCLabelTTF *_scoreLabel;
 }
 
 - (void)didLoadFromCCB {
@@ -28,22 +29,19 @@
     _spawnStarTime = 60;
     _currentTime = 0;
     _starCount = 1;
+    _score = 0;
     
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
+        _physicsNode.debugDraw = TRUE;
+    _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
     
     //Determines the size of the game.
     _motionManager = [[CMMotionManager alloc] init];
     viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
     viewWidth = [[CCDirector sharedDirector] viewSize].width;   //320
     NSLog(@"%f",viewHeight);
-}
-
-- (void)openSettings {
-    NSLog(@"Settings activated");
-    CCScene *settingsScene = [CCBReader loadAsScene:@"Settings"];
-    [[CCDirector sharedDirector] replaceScene:settingsScene];
 }
 
 - (void)createStars{
@@ -74,25 +72,12 @@
     }
 }
 
-
-
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA wildcard:(CCNode *)nodeB
-{
-    CCLOG(@"Something collided with a star!");
-    float energy = [pair totalKineticEnergy];
-    
-    // if energy is large enough, remove the seal
-    if (energy > 1.f) {
-        [[_physicsNode space] addPostStepBlock:^{
-            [self starRemoved:nodeA];
-        } key:nodeA];
+- (void) createAsteroids{
+    if(_currentTime < 1000){
+        
     }
+    
 }
-
-- (void) starRemoved:(CCNode *)Star {
-    [Star removeFromParent];
-}
-
 
 - (void)update:(CCTime)delta {
     //Accelerometer code.
@@ -107,6 +92,39 @@
     _currentShip.position = CGPointMake(newXPosition, newYPosition);
     
     [self createStars];
+    [self createAsteroids];
+    
+    _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
+}
+
+#pragma mark Collision Methods
+
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA wildcard:(CCNode *)nodeB
+{
+    CCLOG(@"Something collided with a star!");
+   // float energy = [pair totalKineticEnergy];
+    
+    // if energy is large enough, remove the seal
+    //if (energy > 1.f) {
+        [[_physicsNode space] addPostStepBlock:^{
+            [self starRemoved:nodeA];
+        } key:nodeA];
+    //}
+}
+
+- (void) starRemoved:(CCNode *)Star {
+    [Star removeFromParent];
+    _starCount--;
+    _score++;
+    
+    // load particle effect
+    CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
+    // make the particle effect clean itself up, once it is completed
+    explosion.autoRemoveOnFinish = TRUE;
+    // place the particle effect on the seals position
+    explosion.position = Star.position;
+    // add the particle effect to the same node the seal is on
+    [Star.parent addChild:explosion];
 }
 
 #pragma mark Accelerometer Methods
@@ -122,4 +140,22 @@
     [super onExit];
     [_motionManager stopAccelerometerUpdates];
 }
+
+#pragma mark UI Methods
+- (void)pause
+{
+    [self unschedule:@selector(update)];
+}
+
+- (void)play
+{
+    [self schedule:@selector(update) interval:0.5f];
+}
+
+- (void)openSettings {
+    NSLog(@"Settings activated");
+    CCScene *settingsScene = [CCBReader loadAsScene:@"Settings"];
+    [[CCDirector sharedDirector] replaceScene:settingsScene];
+}
+
 @end
