@@ -20,4 +20,9 @@
      [[CCDirector sharedDirector] popScene];
 }
 
+-(void)restart{
+    [[CCDirector sharedDirector]popScene];
+    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
+    [[CCDirector sharedDirector] replaceScene:gameplayScene];
+}
 @end

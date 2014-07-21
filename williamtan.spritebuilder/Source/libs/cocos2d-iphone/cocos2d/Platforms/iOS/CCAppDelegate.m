@@ -76,18 +76,7 @@ const CGSize FIXED_SIZE = {568, 384};
 // Only valid for iOS 6+. NOT VALID for iOS 4 / 5.
 -(NSUInteger)supportedInterfaceOrientations
 {
-    if ([_screenOrientation isEqual:CCScreenOrientationAll])
-    {
-        return UIInterfaceOrientationMaskAll;
-    }
-    else if ([_screenOrientation isEqual:CCScreenOrientationPortrait])
-    {
-        return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-    }
-    else
-    {
-        return UIInterfaceOrientationMaskLandscape;
-    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 // Supported orientations. Customize it for your own needs

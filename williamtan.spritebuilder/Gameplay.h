@@ -10,5 +10,6 @@
 @interface Gameplay : CCNode <CCPhysicsCollisionDelegate> {
     int ACCEL;
 }
+@property(nonatomic,assign) int asteroidCount;
 
 @end

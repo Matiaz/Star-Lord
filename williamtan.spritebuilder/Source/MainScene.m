@@ -13,7 +13,7 @@
 
 - (void)play {
     NSLog(@"play activated");
-    gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
+    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
 }
 @end

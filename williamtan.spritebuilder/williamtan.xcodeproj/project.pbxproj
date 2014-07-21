@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392007918EE8E3300B6C429 /* GLKit.framework */; };
 		88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 88011D62196DBD3100FE3CB8 /* Gameplay.m */; };
+		883C7D871975A75600B626B4 /* EndScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 883C7D861975A75600B626B4 /* EndScene.m */; };
 		885468B819706AF000AA122E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885468B719706AF000AA122E /* CoreMotion.framework */; };
 		885468BC1970751C00AA122E /* Ship.m in Sources */ = {isa = PBXBuildFile; fileRef = 885468BB1970751C00AA122E /* Ship.m */; };
 		885468C31970DB0600AA122E /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 885468C21970DB0600AA122E /* Settings.m */; };
-		888234D219744CC30080042B /* Asteriod1.m in Sources */ = {isa = PBXBuildFile; fileRef = 888234D119744CC30080042B /* Asteriod1.m */; };
+		886EEC9A1979A1310029A5AF /* LightingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 886EEC991979A1310029A5AF /* LightingLayer.m */; };
 		88A205D7197205530015925F /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A205D6197205530015925F /* Star.m */; };
+		88FCDD5319757C8D00D3D5EA /* Asteroid1.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FCDD5219757C8D00D3D5EA /* Asteroid1.m */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
 		B71F5913188484E7003F4D28 /* iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5909188484E7003F4D28 /* iPad.png */; };
@@ -65,15 +67,19 @@
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		88011D61196DBD3100FE3CB8 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
 		88011D62196DBD3100FE3CB8 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gameplay.m; sourceTree = "<group>"; };
+		883C7D851975A75600B626B4 /* EndScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
+		883C7D861975A75600B626B4 /* EndScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndScene.m; sourceTree = "<group>"; };
 		885468B719706AF000AA122E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		885468BA1970751C00AA122E /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ship.h; path = Source/Ship.h; sourceTree = "<group>"; };
 		885468BB1970751C00AA122E /* Ship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Ship.m; path = Source/Ship.m; sourceTree = "<group>"; };
 		885468C11970DB0600AA122E /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = Source/Settings.h; sourceTree = "<group>"; };
 		885468C21970DB0600AA122E /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = Source/Settings.m; sourceTree = "<group>"; };
-		888234D019744CC30080042B /* Asteriod1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asteriod1.h; path = Source/Asteriod1.h; sourceTree = "<group>"; };
-		888234D119744CC30080042B /* Asteriod1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asteriod1.m; path = Source/Asteriod1.m; sourceTree = "<group>"; };
+		886EEC981979A1310029A5AF /* LightingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightingLayer.h; sourceTree = "<group>"; };
+		886EEC991979A1310029A5AF /* LightingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightingLayer.m; sourceTree = "<group>"; };
 		88A205D5197205530015925F /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Star.h; path = Source/Star.h; sourceTree = "<group>"; };
 		88A205D6197205530015925F /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Star.m; path = Source/Star.m; sourceTree = "<group>"; };
+		88FCDD5119757C8D00D3D5EA /* Asteroid1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asteroid1.h; path = Source/Asteroid1.h; sourceTree = "<group>"; };
+		88FCDD5219757C8D00D3D5EA /* Asteroid1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asteroid1.m; path = Source/Asteroid1.m; sourceTree = "<group>"; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
 		B71F5908188484E7003F4D28 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old@2x.png"; path = "Icons/iPad-old@2x.png"; sourceTree = "<group>"; };
 		B71F5909188484E7003F4D28 /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPad.png; path = Icons/iPad.png; sourceTree = "<group>"; };
@@ -143,20 +149,24 @@
 		B737893C1807616C0076A88C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				88FCDD5119757C8D00D3D5EA /* Asteroid1.h */,
+				88FCDD5219757C8D00D3D5EA /* Asteroid1.m */,
 				885468BA1970751C00AA122E /* Ship.h */,
 				885468BB1970751C00AA122E /* Ship.m */,
 				B737893D1807617C0076A88C /* AppDelegate.h */,
 				B737893E1807617C0076A88C /* AppDelegate.m */,
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
+				883C7D851975A75600B626B4 /* EndScene.h */,
+				883C7D861975A75600B626B4 /* EndScene.m */,
 				88011D61196DBD3100FE3CB8 /* Gameplay.h */,
 				88011D62196DBD3100FE3CB8 /* Gameplay.m */,
-				888234D019744CC30080042B /* Asteriod1.h */,
-				888234D119744CC30080042B /* Asteriod1.m */,
 				88A205D5197205530015925F /* Star.h */,
 				88A205D6197205530015925F /* Star.m */,
 				885468C11970DB0600AA122E /* Settings.h */,
 				885468C21970DB0600AA122E /* Settings.m */,
+				886EEC981979A1310029A5AF /* LightingLayer.h */,
+				886EEC991979A1310029A5AF /* LightingLayer.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -371,12 +381,14 @@
 			files = (
 				B737893F1807617C0076A88C /* AppDelegate.m in Sources */,
 				88A205D7197205530015925F /* Star.m in Sources */,
-				888234D219744CC30080042B /* Asteriod1.m in Sources */,
+				88FCDD5319757C8D00D3D5EA /* Asteroid1.m in Sources */,
 				88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				885468BC1970751C00AA122E /* Ship.m in Sources */,
 				885468C31970DB0600AA122E /* Settings.m in Sources */,
+				883C7D871975A75600B626B4 /* EndScene.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
+				886EEC9A1979A1310029A5AF /* LightingLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
