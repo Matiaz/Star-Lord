@@ -14,10 +14,12 @@
 #import "Asteroid1.h"
 #import "RepulseAsteroid.h"
 #import "CCSprite.h"
+#import "VisionPack.h"
 
 @implementation Gameplay{
     Ship *_currentShip;
     Asteroid1 *_asteroid;
+    VisionPack *_visionPack;
     CMMotionManager *_motionManager;
     CCPhysicsNode *_physicsNode;
     float viewHeight, viewWidth;
@@ -25,9 +27,12 @@
     RepulseAsteroid *_repulseAsteroid;
     int _starCount, MAXSTARS, _lastStarX, _lastStarY, MAXASTEROIDS;
     int _powerUpCount, MAXPOWERUP, _lastPowerUpX, _lastPowerUpY;
+    int _visionPackCount, MAXVISIONPACK;
     long _currentTime, _spawnStarTime;
     long _spawnPowerUpTime;
-    float MAXVISION, MINVISION, VISIONFACTOR, _currentVision;
+    long _currentVisionPackTime, _spawnVisionPackTime;
+    float MAXVISION, MINVISION, VISIONFACTOR, RESTOREVISIONFACTOR, _currentVision, _visionPackSpawnTime;
+    BOOL RestoreVisionNow;
     CCLabelTTF *_scoreLabel;
     CCSprite *_vision;
 }
@@ -50,7 +55,14 @@
     
     MINVISION = 4;
     MAXVISION = 19;
-    VISIONFACTOR = 0.01;
+    VISIONFACTOR = 0.015;
+    RESTOREVISIONFACTOR = 0.16;
+    RestoreVisionNow = false;
+    
+    _visionPackCount = 0;
+    MAXVISIONPACK = 1;
+    _currentVisionPackTime = 0;
+    _spawnVisionPackTime = 500;
     
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
@@ -72,12 +84,9 @@
 - (void)createStars{
     int x,y;
     
-    if((_currentTime == _spawnStarTime) && (_starCount < MAXSTARS)){
-        x = random() % 263 + 30; // max x value is 293
-        x = clampf(x, 30, viewWidth-28);
-
-        y = random() % 480 + 20; // max y value is 568
-        y = clampf(y, 20, viewHeight-21);
+    if((_currentTime == _spawnStarTime) && (_starCount < MAXSTARS)){// max x value is 293
+        x = clampf(random() % 263 + 30, 30, viewWidth-28); // max y value is 568
+        y = clampf(random() % 480 + 20, 20, viewHeight-21);
         
         if((abs(_lastStarX - x)) > 100 && (abs(_lastStarY - y) > 200)){
             _star = (Star*)[CCBReader load:@"Star"];
@@ -100,11 +109,8 @@
     int x,y;
     
     if((_currentTime == _spawnPowerUpTime) && (_powerUpCount < MAXPOWERUP)){
-        x = random() % 263 + 30; // max x value is 293
-        x = clampf(x, 30, viewWidth-28);
-        
-        y = random() % 480 + 20; // max y value is 568
-        y = clampf(y, 20, viewHeight-21);
+        x = clampf(random() % 263 + 30, 30, viewWidth-28);
+        y = clampf(random() % 480 + 20, 20, viewHeight-21);
         
         if((abs(_lastPowerUpX - x)) > 100 && (abs(_lastPowerUpY - y) > 200)){
             _repulseAsteroid = (RepulseAsteroid*)[CCBReader load:@"RepulseAsteroid"];
@@ -121,8 +127,26 @@
         else
             [self createPowerUps];
     }
-
 }
+
+-(void) createVisonPacks{
+    int x, y;
+
+    if(_visionPackCount < MAXVISIONPACK &&  _currentVisionPackTime == _spawnVisionPackTime){
+        x = clampf(random() % 263 + 30, 30, viewWidth-28);
+        y = clampf(random() % 480 + 20, 20, viewHeight-21);
+        
+            _visionPack = (VisionPack*)[CCBReader load:@"VisionPack"];
+            _visionPack.position = ccp(x, y);
+            [_physicsNode addChild:_visionPack];
+            NSLog(@"Added vision pack x:%i, y%i", x,y);
+            
+            _visionPackCount++;
+            _spawnVisionPackTime = _spawnVisionPackTime + 500;
+        }
+    }
+
+
 - (void) createAndRemoveAsteroids{
     int shootAsteroidChance, totalChance;
     totalChance = (random() % 1000) + 1; //1-100
@@ -178,36 +202,41 @@
     }
 }
 
-- (void)calibrateShip{
-}
-
-- (void)scaleVision:(float) scaleBy{
+- (void)decreaseVision{
     
-    if(scaleBy <= MAXVISION && scaleBy >= MINVISION)
-        [_vision setScale: scaleBy];
-    else
-        [_vision setScale: MINVISION];
-}
-
-- (void)activateVision{
     _vision.position = _currentShip.position;
     
     if(_currentTime == 1){
         _currentVision = MAXVISION;
-        [self scaleVision: _currentVision];
+        [_vision setScale: _currentVision];
+    }
+    else if(_currentVision <= MAXVISION && _currentVision >= MINVISION){
+        _currentVision = _currentVision - VISIONFACTOR;
+        [_vision setScale: _currentVision];
     }
     else{
-        _currentVision = _currentVision - VISIONFACTOR;
-        [self scaleVision: _currentVision];
+        _currentVision = MINVISION;
+        [_vision setScale:_currentVision];
     }
     
 }
 
+-(void)restoreVision{
+    _vision.position = _currentShip.position;
+    if(_currentVision < MAXVISION){
+        _currentVision = _currentVision + RESTOREVISIONFACTOR;
+        [_vision setScale:_currentVision];
+    }
+    if(_currentVision == MAXVISION)
+        RestoreVisionNow = false;
+}
 - (void)update:(CCTime)delta{
     _currentTime++;
     if(_currentTime > _spawnStarTime){
         _currentTime = _spawnStarTime - 60;
     }
+    
+    _currentVisionPackTime++;
     
     //Accelerometer code.
     CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
@@ -222,13 +251,17 @@
     
     [self createStars];
     [self createPowerUps];
-    [self createAndRemoveAsteroids];
-    [self activateVision];
-
+    //[self createAndRemoveAsteroids];
+    [self createVisonPacks];
+    
+    if(RestoreVisionNow == false)
+    [self decreaseVision];
+    
+    if(RestoreVisionNow == true)
+    [self restoreVision];
     
     _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
-   NSLog(@"current vision %f", _currentVision);
-    
+   // NSLog(@"currentVisionTime %ld", _currentVisionPackTime);
 }
 
 #pragma mark Collision Methods
@@ -314,4 +347,17 @@
         [RepulseAsteroid removeFromParent];
 }
 
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair VisionPack:(CCNode *)nodeA Ship:(CCNode *)nodeB
+{
+    CCLOG(@"Something collided with a visionPack!");
+    [[_physicsNode space] addPostStepBlock:^{
+        [self visionPackRemoved:nodeA];
+    } key:nodeA];
+}
+
+-(void) visionPackRemoved:(CCNode *)VisionPack{
+    [VisionPack removeFromParent];
+    RestoreVisionNow = true;
+    _visionPackCount--;
+}
 @end
