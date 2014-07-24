@@ -7,11 +7,14 @@
 //
 
 #import "EndScene.h"
-
-@implementation EndScene
+#import "Gameplay.h"
+@implementation EndScene{
+    CCLabelTTF *_scoreLabel;
+}
 
 - (void)didLoadFromCCB {
     self.userInteractionEnabled = TRUE;
+     _scoreLabel.string = [NSString stringWithFormat:@"%d",self.gameplay.score];
 }
 
 - (void)openGameplay{
@@ -24,5 +27,9 @@
     NSLog(@"Mainscene actvaed");
     CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
     [[CCDirector sharedDirector] replaceScene:mainScene];
+}
+
+
+- (void)update:(CCTime)delta{
 }
 @end

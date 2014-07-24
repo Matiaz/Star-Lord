@@ -12,18 +12,24 @@
 #import <CoreMotion/CoreMotion.h>
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Asteroid1.h"
-
+#import "RepulseAsteroid.h"
+#import "CCSprite.h"
 
 @implementation Gameplay{
     Ship *_currentShip;
-     Asteroid1 *_asteroid;
+    Asteroid1 *_asteroid;
     CMMotionManager *_motionManager;
     CCPhysicsNode *_physicsNode;
     float viewHeight, viewWidth;
     Star *_star;
-    int _starCount, MAXSTARS, _lastStarX, _lastStarY, _score, MAXASTEROIDS;;
+    RepulseAsteroid *_repulseAsteroid;
+    int _starCount, MAXSTARS, _lastStarX, _lastStarY, MAXASTEROIDS;
+    int _powerUpCount, MAXPOWERUP, _lastPowerUpX, _lastPowerUpY;
     long _currentTime, _spawnStarTime;
+    long _spawnPowerUpTime;
+    float MAXVISION, MINVISION, VISIONFACTOR, _currentVision;
     CCLabelTTF *_scoreLabel;
+    CCSprite *_vision;
 }
 
 #pragma mark Game Methods
@@ -38,10 +44,18 @@
     _score = 0;
     _asteroidCount = 0;
     
+    MAXPOWERUP = 1;
+    _spawnPowerUpTime = 700;
+    _powerUpCount = 0;
+    
+    MINVISION = 4;
+    MAXVISION = 19;
+    VISIONFACTOR = 0.01;
+    
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
-    // _physicsNode.debugDraw = TRUE;
+    //_physicsNode.debugDraw = TRUE;
     _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
     
     //Determines the size of the game.
@@ -49,11 +63,14 @@
     viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
     viewWidth = [[CCDirector sharedDirector] viewSize].width;   //320
     
+    _currentShip.positionType = CCPositionTypePoints;
+    _vision.positionType = CCPositionTypePoints;
+    _currentShip.position = ccp(viewWidth/2, viewHeight/2);
+    _vision.position = ccp(viewWidth/2, viewHeight/2);
 }
 
 - (void)createStars{
     int x,y;
-    
     
     if((_currentTime == _spawnStarTime) && (_starCount < MAXSTARS)){
         x = random() % 263 + 30; // max x value is 293
@@ -79,10 +96,36 @@
     }
 }
 
+-(void) createPowerUps{
+    int x,y;
+    
+    if((_currentTime == _spawnPowerUpTime) && (_powerUpCount < MAXPOWERUP)){
+        x = random() % 263 + 30; // max x value is 293
+        x = clampf(x, 30, viewWidth-28);
+        
+        y = random() % 480 + 20; // max y value is 568
+        y = clampf(y, 20, viewHeight-21);
+        
+        if((abs(_lastPowerUpX - x)) > 100 && (abs(_lastPowerUpY - y) > 200)){
+            _repulseAsteroid = (RepulseAsteroid*)[CCBReader load:@"RepulseAsteroid"];
+            _repulseAsteroid.position = ccp(x, y);
+            [_physicsNode addChild:_repulseAsteroid];
+            NSLog(@"Added repulse powerup x:%i, y%i", x,y);
+            
+            _powerUpCount++;
+            _spawnPowerUpTime = _spawnPowerUpTime + 700;
+            _lastPowerUpX = x;
+            _lastPowerUpY = y;
+        }
+        
+        else
+            [self createPowerUps];
+    }
+
+}
 - (void) createAndRemoveAsteroids{
     int shootAsteroidChance, totalChance;
     totalChance = (random() % 1000) + 1; //1-100
-//    [self asteroidRemoved];
     
     if(_currentTime <= 600){ // First 10 seconds of the game.
         shootAsteroidChance = 5; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
@@ -91,7 +134,6 @@
             [self shootAsteroids];
             }
     }
-
 
     if((_currentTime > 600) && (_currentTime <= 1200)){ //10 sec
         shootAsteroidChance = 10; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
@@ -104,14 +146,14 @@
     if((_currentTime > 1200) && (_currentTime <= 2400)){ //20sec
         shootAsteroidChance = 15; // Will shoot in 3/100 updates.
         if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 7;
+            MAXASTEROIDS = 6;
             [self shootAsteroids];
         }
     }
     if(_currentTime > 2400){
         shootAsteroidChance = 20; // Will shoot in 4/100 updates.
         if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 8;
+            MAXASTEROIDS = 7;
             [self shootAsteroids];
         }
     }
@@ -136,7 +178,32 @@
     }
 }
 
-- (void)update:(CCTime)delta {
+- (void)calibrateShip{
+}
+
+- (void)scaleVision:(float) scaleBy{
+    
+    if(scaleBy <= MAXVISION && scaleBy >= MINVISION)
+        [_vision setScale: scaleBy];
+    else
+        [_vision setScale: MINVISION];
+}
+
+- (void)activateVision{
+    _vision.position = _currentShip.position;
+    
+    if(_currentTime == 1){
+        _currentVision = MAXVISION;
+        [self scaleVision: _currentVision];
+    }
+    else{
+        _currentVision = _currentVision - VISIONFACTOR;
+        [self scaleVision: _currentVision];
+    }
+    
+}
+
+- (void)update:(CCTime)delta{
     _currentTime++;
     if(_currentTime > _spawnStarTime){
         _currentTime = _spawnStarTime - 60;
@@ -154,10 +221,13 @@
     _currentShip.position = CGPointMake(newXPosition, newYPosition);
     
     [self createStars];
+    [self createPowerUps];
     [self createAndRemoveAsteroids];
-    
+    [self activateVision];
+
     
     _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
+   NSLog(@"current vision %f", _currentVision);
     
 }
 
@@ -186,6 +256,7 @@
 }
 
 - (void) starRemoved:(CCNode *)Star {
+    
     _starCount--;
     _score++;
     
@@ -228,6 +299,19 @@
     [[CCDirector sharedDirector] pushScene:settingsScene];
 }
 
-#pragma mark Parallax Methods
+#pragma mark Power Ups
+
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair RepulseAsteroid:(CCNode *)nodeA Ship:(CCNode *)nodeB
+{
+    CCLOG(@"Something collided with a repluse powerup!");
+    [[_physicsNode space] addPostStepBlock:^{
+        [self repulseAsteroidRemoved:nodeA];
+    } key:nodeA];
+}
+
+
+- (void) repulseAsteroidRemoved:(CCNode *)RepulseAsteroid {
+        [RepulseAsteroid removeFromParent];
+}
 
 @end

@@ -11,5 +11,6 @@
     int ACCEL;
 }
 @property(nonatomic,assign) int asteroidCount;
+@property(nonatomic,assign) int score;
 
 @end
