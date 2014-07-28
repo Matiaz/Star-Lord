@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>50</integer>
+	<integer>52</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -41,7 +41,7 @@
 		<array>
 			<dict>
 				<key>UUID</key>
-				<integer>49</integer>
+				<integer>50</integer>
 				<key>baseClass</key>
 				<string>CCSprite</string>
 				<key>children</key>
@@ -49,7 +49,7 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>white</string>
+				<string>hills_background</string>
 				<key>memberVarAssignmentName</key>
 				<string></string>
 				<key>memberVarAssignmentType</key>
@@ -71,11 +71,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>-48.000015258789062</real>
-							<real>523</real>
+							<real>0.5</real>
+							<real>0.5</real>
 							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -96,8 +96,8 @@
 						<string>ScaleLock</string>
 						<key>value</key>
 						<array>
-							<real>11.694758415222168</real>
-							<real>10.174137115478516</real>
+							<real>2.0249454975128174</real>
+							<real>2.0231420993804932</real>
 							<false/>
 							<integer>0</integer>
 						</array>
@@ -110,7 +110,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/white.png</string>
+							<string>assets/hills_background.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -443,8 +443,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>

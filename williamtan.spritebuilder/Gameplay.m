@@ -17,52 +17,66 @@
 #import "VisionPack.h"
 
 @implementation Gameplay{
+    CCPhysicsNode *_physicsNode;
+    CMMotionManager *_motionManager;
+    
     Ship *_currentShip;
     Asteroid1 *_asteroid;
     VisionPack *_visionPack;
-    CMMotionManager *_motionManager;
-    CCPhysicsNode *_physicsNode;
-    float viewHeight, viewWidth;
     Star *_star;
     RepulseAsteroid *_repulseAsteroid;
+    CCSprite *_vision;
+    
+    CCLabelTTF *_scoreLabel;
+    CCLabelTTF *_visionPackLabel;
+    
     int _starCount, MAXSTARS, _lastStarX, _lastStarY, MAXASTEROIDS;
     int _powerUpCount, MAXPOWERUP, _lastPowerUpX, _lastPowerUpY;
-    int _visionPackCount, MAXVISIONPACK;
+    int _visionPackCount, MAXVISIONPACK, _numVisionPackPowerUp;
     long _currentTime, _spawnStarTime;
     long _spawnPowerUpTime;
     long _currentVisionPackTime, _spawnVisionPackTime;
-    float MAXVISION, MINVISION, VISIONFACTOR, RESTOREVISIONFACTOR, _currentVision, _visionPackSpawnTime;
-    BOOL RestoreVisionNow;
-    CCLabelTTF *_scoreLabel;
-    CCSprite *_vision;
+    long earlyGame, midGame, lateGame;
+    float MAXVISION, MINVISION, DECREASEVISIONFACTOR, RESTOREVISIONFACTOR, _currentVision;
+    float viewHeight, viewWidth;
+    BOOL RestoreVisionNow, RestartDecreaseVision;
+    
+    
 }
 
 #pragma mark Game Methods
 
 - (void)didLoadFromCCB {
-    //Determines how fast the spaceship moves.
     ACCEL = 1500;
-    MAXSTARS = 5;
-    _spawnStarTime = 60;
-    _currentTime = 0;
-    _starCount = 0;
     _score = 0;
+    
+    _currentTime = 0;
+    _spawnStarTime = 60;
+    _starCount = 0;
+    MAXSTARS = 5;
+    
     _asteroidCount = 0;
     
-    MAXPOWERUP = 1;
     _spawnPowerUpTime = 700;
     _powerUpCount = 0;
+     MAXPOWERUP = 1;
     
-    MINVISION = 4;
-    MAXVISION = 19;
-    VISIONFACTOR = 0.015;
+    MINVISION = 5;
+    MAXVISION = 16.5;
+    DECREASEVISIONFACTOR = 0.015;
     RESTOREVISIONFACTOR = 0.16;
     RestoreVisionNow = false;
+    RestartDecreaseVision = false;
     
-    _visionPackCount = 0;
-    MAXVISIONPACK = 1;
+    _numVisionPackPowerUp = 0;
     _currentVisionPackTime = 0;
     _spawnVisionPackTime = 500;
+    _visionPackCount = 0;
+    MAXVISIONPACK = 1;
+    
+    earlyGame = 600;
+    midGame = 1200;
+    lateGame =  2400;
     
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
@@ -151,7 +165,7 @@
     int shootAsteroidChance, totalChance;
     totalChance = (random() % 1000) + 1; //1-100
     
-    if(_currentTime <= 600){ // First 10 seconds of the game.
+    if(_currentTime <= earlyGame){ // First 10 seconds of the game.
         shootAsteroidChance = 5; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 4;
@@ -159,7 +173,7 @@
             }
     }
 
-    if((_currentTime > 600) && (_currentTime <= 1200)){ //10 sec
+    if((_currentTime > earlyGame) && (_currentTime <= 1200)){ //10 sec
         shootAsteroidChance = 10; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 5;
@@ -167,14 +181,14 @@
         }
     }
     
-    if((_currentTime > 1200) && (_currentTime <= 2400)){ //20sec
+    if((_currentTime > midGame) && (_currentTime <= 2400)){ //20sec
         shootAsteroidChance = 15; // Will shoot in 3/100 updates.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 6;
             [self shootAsteroids];
         }
     }
-    if(_currentTime > 2400){
+    if(_currentTime > lateGame){
         shootAsteroidChance = 20; // Will shoot in 4/100 updates.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 7;
@@ -206,12 +220,13 @@
     
     _vision.position = _currentShip.position;
     
-    if(_currentTime == 1){
+    if(_currentTime == 1 || RestartDecreaseVision == true){
         _currentVision = MAXVISION;
         [_vision setScale: _currentVision];
+        RestartDecreaseVision = false;
     }
     else if(_currentVision <= MAXVISION && _currentVision >= MINVISION){
-        _currentVision = _currentVision - VISIONFACTOR;
+        _currentVision = _currentVision - DECREASEVISIONFACTOR;
         [_vision setScale: _currentVision];
     }
     else{
@@ -223,12 +238,17 @@
 
 -(void)restoreVision{
     _vision.position = _currentShip.position;
-    if(_currentVision < MAXVISION){
+    if(_currentVision <= MAXVISION){
         _currentVision = _currentVision + RESTOREVISIONFACTOR;
         [_vision setScale:_currentVision];
+        
+        if(_currentVision >= MAXVISION){
+            RestoreVisionNow = false;
+            RestartDecreaseVision = true;
+        }
+        
+        
     }
-    if(_currentVision == MAXVISION)
-        RestoreVisionNow = false;
 }
 - (void)update:(CCTime)delta{
     _currentTime++;
@@ -251,7 +271,7 @@
     
     [self createStars];
     [self createPowerUps];
-    //[self createAndRemoveAsteroids];
+    [self createAndRemoveAsteroids];
     [self createVisonPacks];
     
     if(RestoreVisionNow == false)
@@ -261,7 +281,8 @@
     [self restoreVision];
     
     _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
-   // NSLog(@"currentVisionTime %ld", _currentVisionPackTime);
+    _visionPackLabel.string = [NSString stringWithFormat:@"%d",_numVisionPackPowerUp];
+    NSLog(@"%f", _currentVision);
 }
 
 #pragma mark Collision Methods
@@ -293,18 +314,12 @@
     _starCount--;
     _score++;
     
-    // load particle effect
     CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
-    // make the particle effect clean itself up, once it is completed
     explosion.autoRemoveOnFinish = TRUE;
-    // place the particle effect on the seals position
     explosion.position = Star.position;
-    // add the particle effect to the same node the seal is on
     [Star.parent addChild:explosion];
     
-    
-    [Star removeFromParent];
-   
+     [Star removeFromParent];
 }
 
 #pragma mark Accelerometer Methods
@@ -332,6 +347,16 @@
     [[CCDirector sharedDirector] pushScene:settingsScene];
 }
 
+//- (void)pressedLight{
+//    if(_numVisionPack > 0){
+//        RestoreVisionNow = true;
+//        _numVisionPack--;
+//    }
+//    else
+//        NSLog(@"No vision packs");
+    
+//}
+
 #pragma mark Power Ups
 
 -(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair RepulseAsteroid:(CCNode *)nodeA Ship:(CCNode *)nodeB
@@ -357,7 +382,19 @@
 
 -(void) visionPackRemoved:(CCNode *)VisionPack{
     [VisionPack removeFromParent];
-    RestoreVisionNow = true;
+    _numVisionPackPowerUp++;
     _visionPackCount--;
 }
+
+#pragma mark - touch handling
+
+- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    if(_numVisionPackPowerUp > 0){
+        RestoreVisionNow = true;
+        _numVisionPackPowerUp--;
+    }
+    else
+        NSLog(@"No vision packs");
+}
+
 @end

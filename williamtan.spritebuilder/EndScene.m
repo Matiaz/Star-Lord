@@ -28,8 +28,4 @@
     CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
     [[CCDirector sharedDirector] replaceScene:mainScene];
 }
-
-
-- (void)update:(CCTime)delta{
-}
 @end
