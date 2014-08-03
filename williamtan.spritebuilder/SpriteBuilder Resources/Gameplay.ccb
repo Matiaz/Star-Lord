@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>63</integer>
+	<integer>66</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -41,7 +41,7 @@
 		<array>
 			<dict>
 				<key>UUID</key>
-				<integer>60</integer>
+				<integer>63</integer>
 				<key>baseClass</key>
 				<string>CCSprite</string>
 				<key>children</key>
@@ -49,7 +49,7 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>white</string>
+				<string>purple</string>
 				<key>memberVarAssignmentName</key>
 				<string></string>
 				<key>memberVarAssignmentType</key>
@@ -71,8 +71,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>7.9935541152954102</real>
-							<real>583.4296875</real>
+							<real>43</real>
+							<real>431</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -96,8 +96,8 @@
 						<string>ScaleLock</string>
 						<key>value</key>
 						<array>
-							<real>7.6462984085083008</real>
-							<real>10.813632965087891</real>
+							<real>4.450859546661377</real>
+							<real>3.5368747711181641</real>
 							<false/>
 							<integer>0</integer>
 						</array>
@@ -110,7 +110,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/white.png</string>
+							<string>assets/purple.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -357,7 +357,7 @@
 			</dict>
 			<dict>
 				<key>UUID</key>
-				<integer>62</integer>
+				<integer>65</integer>
 				<key>baseClass</key>
 				<string>CCSprite</string>
 				<key>children</key>
@@ -365,7 +365,7 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>visionfinal</string>
+				<string>lightlblue</string>
 				<key>memberVarAssignmentName</key>
 				<string>_vision</string>
 				<key>memberVarAssignmentType</key>
@@ -387,8 +387,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>155.52000427246094</real>
-							<real>282.24002075195312</real>
+							<real>0.0</real>
+							<real>0.0</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -426,7 +426,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/visionfinal.png</string>
+							<string>assets/lightlblue.png</string>
 						</array>
 					</dict>
 					<dict>
