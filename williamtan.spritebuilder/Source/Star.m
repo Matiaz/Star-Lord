@@ -11,5 +11,6 @@
 
 -(void)didLoadFromCCB{
     self.physicsBody.collisionType = @"Star";
+    //self.physicsBody.sensor = true;
 }
 @end

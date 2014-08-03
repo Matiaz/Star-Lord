@@ -16,11 +16,13 @@ int viewHeight, viewWidth;
     self.physicsBody.collisionType = @"Asteroid1";
     viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
     viewWidth = [[CCDirector sharedDirector] viewSize].width;   //320
+    self.zOrder = -1000;
 }
 
 - (void)update:(CCTime)delta{
     if((self.position.x < -20 || self.position.x > viewWidth + 20|| self.position.y < 0 -20|| self.position.y > viewHeight + 11)){
         [self removeFromParent];
+        [self.gameplay removeAsteroidFromArray: self];
        self.gameplay.asteroidCount--;
         NSLog(@"Asteroid removed. Asteroid count: %i", self.gameplay.asteroidCount);
     }

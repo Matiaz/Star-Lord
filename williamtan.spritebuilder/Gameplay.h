@@ -7,10 +7,13 @@
 //
 
 #import "CCScene.h"
+@class Asteroid1;
+
 @interface Gameplay : CCNode <CCPhysicsCollisionDelegate> {
     int ACCEL;
 }
 @property(nonatomic,assign) int asteroidCount;
 @property(nonatomic,assign) int score;
 
+-(void) removeAsteroidFromArray:(Asteroid1 *)asteroid;
 @end
