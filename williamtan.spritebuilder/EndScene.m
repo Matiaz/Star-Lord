@@ -8,13 +8,17 @@
 
 #import "EndScene.h"
 #import "Gameplay.h"
+#import "GameData.h"
 @implementation EndScene{
-    CCLabelTTF *_scoreLabel;
+    CCLabelTTF  *_scoreLabel;
+    GameData *data;
 }
+ 
 
 - (void)didLoadFromCCB {
+    data = [GameData sharedData];
     self.userInteractionEnabled = TRUE;
-     _scoreLabel.string = [NSString stringWithFormat:@"%d",self.gameplay.score];
+     _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
 }
 
 - (void)openGameplay{

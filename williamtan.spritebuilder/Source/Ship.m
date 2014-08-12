@@ -11,5 +11,6 @@
 @implementation Ship
 - (void) didLoadFromCCB{
     self.physicsBody.collisionType = @"Ship";
+    self.zOrder = 11;
 }
 @end

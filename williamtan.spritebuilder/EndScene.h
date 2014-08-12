@@ -7,7 +7,7 @@
 //
 
 #import "CCScene.h"
-@class Gameplay;
-@interface EndScene : CCScene;
-@property(nonatomic,weak) Gameplay *gameplay;
+@interface EndScene : CCScene
+
 @end
+

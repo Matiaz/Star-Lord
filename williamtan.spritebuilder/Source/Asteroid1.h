@@ -7,7 +7,7 @@
 //
 
 #import "CCSprite.h"
-@class Gameplay;
+
 @interface Asteroid1 : CCSprite
-@property(nonatomic,weak) Gameplay *gameplay;
+
 @end

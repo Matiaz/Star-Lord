@@ -5,10 +5,11 @@
 //  Created by William Tan on 7/9/14.
 //  Copyright (c) 2014 Apportable. All rights reserved.
 //
-
+//Johnny rulez!
 #import "Gameplay.h"
 #import "Ship.h"
 #import "Star.h"
+#import "Magnet.h"
 #import <CoreMotion/CoreMotion.h>
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Asteroid1.h"
@@ -16,42 +17,53 @@
 #import "CCSprite.h"
 #import "VisionPack.h"
 #import <UIKit/UIKit.h>
+#import "GameData.h"
+#import "InvinciblePack.h"
 
 @implementation Gameplay{
     CCPhysicsNode *_physicsNode;
     CMMotionManager *_motionManager;
     
     Ship *_currentShip;
-    Asteroid1 *_asteroid;
-    VisionPack *_visionPack, *_currentVisionPackinArray;
+    Asteroid1 *_currentAsteroid;;
+    VisionPack *_currentVisionPack, *_currentVisionPackinArray;
     Star *_currentStar, *_currentStarInArray;
     RepulseAsteroid *_currentRepulseAsteroid, *_currentPowerUpinArray;
+    InvinciblePack *_currentInvinciblePack;
+    Magnet *_currentMagnet;
     CCSprite *_vision;
+    CCNode *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
     CCLabelTTF *_scoreLabel;
     CCLabelTTF *_visionPackLabel;
     
-    int _starCount, MAXSTARS, MAXASTEROIDS, currentStarX, currentStarY;
-    int _powerUpCount, MAXPOWERUP, currentPowerUpX, currentPowerUpY;
-    int _visionPackCount, MAXVISIONPACK, _numVisionPackCollected,
-    currentVisionPackX, currentVisionPackY;
+    int _starCount, MAXSTARS, MAXASTEROIDS, currentX, currentY, _asteroidCount, ACCEL;
+    int _powerUpCount, MAXPOWERUP;
+    int _visionPackCount, MAXVISIONPACK, _numVisionPackCollected;
     long _currentTime, _spawnStarTime, _spawnStarRate;
     long _currentPowerUpTime, _spawnPowerUpTime, _spawnPowerUpRate;
     long _currentVisionPackTime, _spawnVisionPackTime, _spawnVisionPackRate;
-    long earlyGame, midGame, lateGame;
+    long earlyGame, midGame, lateGame, extremeGame;
     float MAXVISION, MINVISION, DECREASEVISIONFACTOR, RESTOREVISIONFACTOR, _currentVision;
     float viewHeight, viewWidth;
     BOOL RestoreVisionNow, ResumeDecreaseVision;
-    double dxFromStar, dyFromStar, distFromStar, dxFromShip, dyFromShip, distFromShip, dxFromPowerUp, dyFromPowerUp, distFromPowerUp, dxFromVisionPack, dyFromVisionPack, distFromVisionPack;
+    BOOL done, isInvincible, startInvincible, startMagnet;
+    double dx, dy, dist, spacing;
     
-    NSMutableArray *asteroidArray, *starArray, *powerUpArray, *VisionPackArray;
-    int numOfOverlappingStars, numIteration;
+    NSMutableArray *asteroidArray, *starArray, *powerUpArray, *VisionPackArray, *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground;
+    int numOverlapping, asteroidShotForce, loopCount, _currentMagnetTime, _stopMagnetTime, _numOfMagnetsCollected, _stopMagnetRate, _attractStarForce, powerUpRandom, _currentInvinciblePackTime, _stopInvinciblePackTime;
+    
+    NSTimeInterval timeSinceTouch;
+    GameData* data;
+    
 }
 
 #pragma mark Game Methods
 
 - (void)didLoadFromCCB {
     ACCEL = 1500;
-    _score = 0;
+    
+    data = [GameData sharedData];
+    data.score = 0;
     
     _currentTime = 0;
     _spawnStarTime = 60;
@@ -62,39 +74,46 @@
     _asteroidCount = 0;
     
     _currentPowerUpTime = 0;
-    _spawnPowerUpTime = 50;
-    _spawnPowerUpRate = _spawnPowerUpTime;
+    _spawnPowerUpTime = 500;
+    _spawnPowerUpRate = _spawnPowerUpTime; //same as above
     _powerUpCount = 0;
     MAXPOWERUP = 1;
     
-    MINVISION = 4;
-    MAXVISION = 11;
-    DECREASEVISIONFACTOR = 0.015;
+    MAXVISION = 13;
+    DECREASEVISIONFACTOR = 0.008;
     RESTOREVISIONFACTOR = 0.16;
     RestoreVisionNow = false;
     ResumeDecreaseVision = false;
-    _currentVision = MAXVISION; //sets the vision when the game starts
+    _currentVision = data.MINVISION; //sets the vision when the game starts
     [_vision setScale:_currentVision];
     
-    _numVisionPackCollected = 20;
+    _numVisionPackCollected = 1;
     _currentVisionPackTime = 0;
-    _spawnVisionPackTime = 500;
-    _spawnVisionPackRate = _spawnVisionPackTime;
+    _spawnVisionPackTime = 350;
+    _spawnVisionPackRate = _spawnVisionPackTime; //same as above
     _visionPackCount = 0;
     MAXVISIONPACK = 1;
     
-    earlyGame = 600;
-    midGame = 1200;
-    lateGame =  2400;
+    earlyGame = 7;
+    midGame = 20;
+    lateGame = 40;
+    extremeGame = 50;
     
-    numOfOverlappingStars = 0;
-    numIteration = 0;
+    isInvincible = false;
+    _currentInvinciblePackTime = 0;
+    _stopInvinciblePackTime = 300;
+    startInvincible = false;
+    
+    _currentMagnetTime = 0;
+    _stopMagnetTime = 450;
+    _attractStarForce = 220;
+    startMagnet = false;
+    spacing = 75;
     
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
     //_physicsNode.debugDraw = TRUE;
-    _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
     
     _motionManager = [[CMMotionManager alloc] init];
     viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
@@ -104,326 +123,240 @@
     _vision.positionType = CCPositionTypePoints;
     _currentShip.position = ccp(viewWidth/2, viewHeight/2);
     _vision.position = ccp(viewWidth/2, viewHeight/2);
+    //    _background1.positionType = CCPositionTypePoints;
+    //    _background2.positionType = CCPositionTypePoints;
+    //    _background1.position = ccp(viewWidth/2, viewHeight/2);
+    //    _background2.position = ccp(viewWidth/2, viewHeight * 1.5 );
     
     asteroidArray = [NSMutableArray array];
     starArray = [NSMutableArray array];
+    powerUpArray = [NSMutableArray array];
+    VisionPackArray = [NSMutableArray array];
+    _closestBackground = [NSMutableArray array];
+    [_closestBackground  addObject:_closestStars1];
+    [_closestBackground  addObject:_closestStars2];
+    _furthurBackground = [NSMutableArray array];
+    [_furthurBackground addObject:_furthurStars1];
+    [_furthurBackground addObject:_furthurStars2];
+    _farthestBackground = [NSMutableArray array];
+    [_farthestBackground addObject:_farthestStars1];
+    [_farthestBackground addObject:_farthestStars2];
+    _overFarthestBackground = [NSMutableArray array];
+    [_overFarthestBackground addObject:_overFarthestStars1];
+    [_overFarthestBackground addObject:_overFarthestStars2];
     
-//    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchBegan:withEvent:)];
-//    doubleTap.numberOfTapsRequired = 2;
-//    doubleTap.numberOfTouchesRequired = 1;
-//    [self addGestureRecognizer: doubleTap];
+    
+    
 }
 
-//-(void) createStarsecond{
-//    if((_currentTime == _spawnStarTime) && (_starCount < MAXSTARS)){
-//        BOOL doneChecking = FALSE;
-//        BOOL oldDoneChecking = FALSE;
-//        BOOL allDone = TRUE;
-//        while (allDone) {
-//            currentStarX = clampf(random() % 263 + 30, 30, viewWidth-28); // max x value is 293
-//            currentStarY = clampf(random() % 480 + 20, 20, viewHeight-21); // max y value is 568
-//            doneChecking = FALSE;
-//            oldDoneChecking = FALSE;
-//            for(Star* item in starArray){
-//                _currentStarInArray = item;
-//
-//                dx = (currentStarX - _currentStarInArray.position.x);
-//                dy = (currentStarY - _currentStarInArray.position.y);
-//                dist = sqrt(dx*dx + dy*dy);
-//                NSLog(@"%f", dist);
-//                oldDoneChecking = doneChecking;
-//                doneChecking = dist<100;
-//
-//                doneChecking = oldDoneChecking || doneChecking;
-//
-//            }
-//
-//            allDone = doneChecking;
-//        }
-//        _currentStar = (Star*)[CCBReader load:@"Star"];
-//
-//        _currentStar.position = ccp(currentStarX, currentStarY);
-//        [_physicsNode addChild:_currentStar];
-//        NSLog(@"Added Star x:%i, y%i", currentStarX,currentStarY);
-//
-//        [starArray addObject:_currentStar];
-//
-//        _starCount++;
-//        _spawnStarTime = _spawnStarTime + _spawnStarRate;
-//
-//
-//    }
-//}
+-(CGPoint) randomPosition {
+    done = false;
+    loopCount = 0;
+    while(done == false){
+        loopCount++;
+        numOverlapping = 0;
+        currentX = clampf(random() % 263+ 30, 30, viewWidth-28); // max x value is 293
+        currentY = clampf(random() % 480+ 20, 20, viewHeight-21); // max y value is 568
+        
+        for(int i = 0;i < starArray.count; i++){
+            _currentStarInArray = starArray[i];
+            
+            dx = (currentX  - _currentStarInArray.position.x);
+            dy = (currentY - _currentStarInArray.position.y);
+            dist = sqrt(dx*dx + dy*dy);
+            
+            if(dist < spacing)
+                numOverlapping++;
+        }
+        
+        for(int i = 0; i < powerUpArray.count; i++){
+            _currentPowerUpinArray = powerUpArray[i];
+            
+            dx = (currentX - _currentPowerUpinArray.position.x);
+            dy = (currentY - _currentPowerUpinArray.position.y);
+            dist = sqrt(dx*dx + dy*dy);
+            
+            if(dist< spacing)
+                numOverlapping++;
+        }
+        
+        for(int i = 0; i < VisionPackArray.count; i++){
+            _currentVisionPackinArray = VisionPackArray[i];
+            
+            dx = (currentX  - _currentVisionPackinArray.position.x);
+            dy = (currentY - _currentVisionPackinArray.position.y);
+            dist = sqrt(dx*dx + dy*dy);
+            
+            if(dist< spacing)
+                numOverlapping++;
+        }
+        
+        
+        dx = (currentX  - _currentShip.position.x);
+        dy = (currentY - _currentShip.position.y);
+        dist = sqrt(dx*dx + dy*dy);
+        if(dist< spacing)
+            numOverlapping++;
+        
+        if(numOverlapping == 0 || loopCount > 1000){
+            if(loopCount > 1000){
+                NSLog(@"LOOPCOUNT OVER 1000");
+            }
+            done = true;
+        }
+    }
+    return ccp(currentX,currentY);
+}
 
 -(void) createStars{
-    bool done;
-    int numOverlappingStars;
-    
     if((_currentTime == _spawnStarTime) && (_starCount < MAXSTARS)){
-        done = false;
-        while(done == false){
-            numOverlappingStars = 0;
-            currentStarX = clampf(random() % 263 + 30, 30, viewWidth-28); // max x value is 293
-            currentStarY = clampf(random() % 480 + 20, 20, viewHeight-21); // max y value is 568
-            
-            for(int i = 0;i < starArray.count; i++){
-                _currentStarInArray = starArray[i];
-                
-                dxFromStar = (currentStarX - _currentStarInArray.position.x);
-                dyFromStar = (currentStarY - _currentStarInArray.position.y);
-                distFromStar = sqrt(dxFromStar*dxFromStar + dyFromStar*dyFromStar);
-                
-                if(distFromStar < 100)
-                    numOverlappingStars++;
-            }
-
-            for(int i = 0; i < powerUpArray.count; i++){
-                _currentPowerUpinArray = powerUpArray[i];
-                
-                dxFromPowerUp = (currentStarX - _currentPowerUpinArray.position.x);
-                dyFromPowerUp = (currentStarY- _currentPowerUpinArray.position.y);
-                distFromPowerUp = (dxFromPowerUp*dxFromPowerUp + dyFromPowerUp * dyFromPowerUp);
-                
-                if(distFromPowerUp < 100)
-                    numOverlappingStars++;
-            }
-            
-            for(int i = 0; i < VisionPackArray.count; i++){
-                _currentVisionPackinArray = VisionPackArray[i];
-                
-                dxFromVisionPack = (currentStarX - _currentVisionPackinArray.position.x);
-                dyFromVisionPack = (currentStarY- _currentVisionPackinArray.position.y);
-                distFromVisionPack = (dxFromVisionPack*dxFromVisionPack + dyFromVisionPack*dyFromVisionPack);
-                
-                if(distFromVisionPack < 100)
-                    numOverlappingStars++;
-            }
         
-            
-            dxFromShip = (currentStarX - _currentShip.position.x);
-            dyFromShip = (currentStarY - _currentShip.position.y);
-            distFromShip = sqrt(dxFromShip*dxFromShip + dyFromShip*dyFromShip);
-            if(distFromShip < 100)
-                numOverlappingStars++;
-            
-            if(numOverlappingStars == 0)
-                done = true;
-        }
+        _currentStar = (Star*)[CCBReader load:@"Star"];
         
-        if(done == true){
-            _currentStar = (Star*)[CCBReader load:@"Star"];
-            
-            _currentStar.position = ccp(currentStarX, currentStarY);
-            [_physicsNode addChild:_currentStar];
-            NSLog(@"Added Star x:%i, y%i", currentStarX,currentStarY);
-            
-            [starArray addObject:_currentStar];
-            
-            _starCount++;
-            _spawnStarTime = _spawnStarTime + _spawnStarRate;
-            
-        }
+        _currentStar.position = [self randomPosition];
+        [_physicsNode addChild:_currentStar];
+        
+        [starArray addObject:_currentStar];
+        
+        _starCount++;
+        _spawnStarTime = _spawnStarTime + _spawnStarRate;
+        
+        
     }
 }
 -(void) createPowerUps{
-    bool done;
-    int numOverlappingPowerUp;
-    
     if((_currentPowerUpTime == _spawnPowerUpTime) && (_powerUpCount < MAXPOWERUP)){
-        done = false;
-        while(done == false){
-            numOverlappingPowerUp = 0;
-            currentPowerUpX = clampf(random() % 263 + 30, 30, viewWidth-28); // max x value is 293
-            currentPowerUpY = clampf(random() % 480 + 20, 20, viewHeight-21); // max y value is 568
+        
+        powerUpRandom = rand() % 10;
+        
+        if(powerUpRandom <= 10){ //Magnet 30%
+            _currentMagnet = (Magnet*)[CCBReader load: @"Magnet"];
+            _currentMagnet.position = [self randomPosition];
             
-            for(int i = 0; i < powerUpArray.count; i++){
-                _currentPowerUpinArray = powerUpArray[i];
-                
-                dxFromPowerUp = (currentPowerUpX - _currentPowerUpinArray.position.x);
-                dyFromPowerUp = (currentPowerUpY- _currentPowerUpinArray.position.y);
-                distFromPowerUp = (dxFromPowerUp*dxFromPowerUp + dyFromPowerUp*dyFromPowerUp);
-                
-                if(distFromPowerUp < 100)
-                    numOverlappingPowerUp++;
-            }
-
+            [_physicsNode addChild:_currentMagnet];
+            [powerUpArray addObject:_currentMagnet];
             
-            for(int i = 0;i < starArray.count; i++){
-                _currentStarInArray = starArray[i];
-                
-                dxFromStar = (currentPowerUpX - _currentStarInArray.position.x);
-                dyFromStar = (currentPowerUpY - _currentStarInArray.position.y);
-                
-                distFromStar = sqrt(dxFromStar*dxFromStar + dyFromStar*dyFromStar);
-                
-                if(distFromStar < 100)
-                    numOverlappingPowerUp++;
-            }
-
-            
-            for(int i = 0; i < VisionPackArray.count; i++){
-                _currentVisionPackinArray = VisionPackArray[i];
-                
-                dxFromVisionPack = (currentPowerUpX - _currentVisionPackinArray.position.x);
-                dyFromVisionPack = (currentPowerUpY- _currentVisionPackinArray.position.y);
-                distFromVisionPack = (dxFromVisionPack*dxFromVisionPack + dyFromVisionPack*dyFromVisionPack);
-                
-                if(distFromVisionPack < 250)
-                    numOverlappingPowerUp++;
-            }
-
-
-            dxFromShip = (currentPowerUpX - _currentShip.position.x);
-            dyFromShip = (currentPowerUpY - _currentShip.position.y);
-            distFromShip = sqrt(dxFromShip*dxFromShip + dyFromShip*dyFromShip);
-            if(distFromShip < 100)
-                numOverlappingPowerUp++;
-            
-            if(numOverlappingPowerUp == 0)
-                done = true;
+            _powerUpCount++;
+            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
         }
         
-        if(done == true){
+        if(powerUpRandom > 2 && powerUpRandom <= 7){ //Repulse Asteroid 50%
             _currentRepulseAsteroid = (RepulseAsteroid*)[CCBReader load:@"RepulseAsteroid"];
-            _currentRepulseAsteroid.position = ccp(currentPowerUpX, currentPowerUpY);
-            [_physicsNode addChild:_currentRepulseAsteroid];
+            _currentRepulseAsteroid.position = [self randomPosition];
             
+            [_physicsNode addChild:_currentRepulseAsteroid];
             [powerUpArray addObject:_currentRepulseAsteroid];
             
             _powerUpCount++;
             _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
-            
         }
+        
+        
+        if(powerUpRandom > 7 && powerUpRandom <= 9 ){ //Invincibility 20%
+            _currentInvinciblePack = (InvinciblePack*)[CCBReader load: @"InvinciblePack"];
+            _currentInvinciblePack.position = [self randomPosition];
+            
+            [_physicsNode addChild:_currentInvinciblePack];
+            [powerUpArray addObject:_currentInvinciblePack];
+            
+            _powerUpCount++;
+            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
+        }
+        
     }
 }
 
 -(void) createVisonPacks{
-    bool done;
-    int numOverlappingVisionPacks;
     
     if((_currentVisionPackTime == _spawnVisionPackTime) && (_visionPackCount < MAXVISIONPACK)){
-        done = false;
-        while (done == false) {
-            numOverlappingVisionPacks = 0;
-            currentVisionPackX = clampf(random() % 263 + 30, 30, viewWidth-28); // max x value is 293
-            currentVisionPackY = clampf(random() % 480 + 20, 20, viewHeight-21); // max y value is 568
-            
-            for(int i = 0;i < starArray.count; i++){
-                _currentStarInArray = starArray[i];
-                
-                dxFromStar = (currentVisionPackX - _currentStarInArray.position.x);
-                dyFromStar = (currentVisionPackY - _currentStarInArray.position.y);
-                distFromStar = sqrt(dxFromStar*dxFromStar + dyFromStar*dyFromStar);
-                
-                if(distFromStar < 100)
-                    numOverlappingVisionPacks++;
-            }
-
-            
-            for(int i = 0; i < powerUpArray.count; i++){
-                _currentPowerUpinArray = powerUpArray[i];
-                
-                dxFromPowerUp = (currentVisionPackX - _currentPowerUpinArray.position.x);
-                dyFromPowerUp = (currentVisionPackY- _currentPowerUpinArray.position.y);
-                distFromPowerUp = (dxFromPowerUp*dxFromPowerUp + dyFromPowerUp*dyFromPowerUp);
-                
-                if(distFromPowerUp < 100)
-                    numOverlappingVisionPacks++;
-            }
-
-            
-            for(int i = 0; i < VisionPackArray.count; i++){
-                _currentVisionPackinArray = VisionPackArray[i];
-                
-                dxFromVisionPack = (currentVisionPackX - _currentVisionPackinArray.position.x);
-                dyFromVisionPack = (currentVisionPackY- _currentVisionPackinArray.position.y);
-                distFromVisionPack = (dxFromVisionPack*dxFromVisionPack + dyFromVisionPack*dyFromVisionPack);
-                
-                if(distFromVisionPack < 100)
-                    numOverlappingVisionPacks++;
-            }
-
-            dxFromShip = (currentVisionPackX - _currentShip.position.x);
-            dyFromShip = (currentVisionPackY - _currentShip.position.y);
-            distFromShip = sqrt(dxFromShip*dxFromShip + dyFromShip*dyFromShip);
-            if(distFromShip < 100)
-                numOverlappingVisionPacks++;
-            
-            if(numOverlappingVisionPacks ==0)
-                done = true;
-        }
         
-        if(done == true){
-            _visionPack = (VisionPack*)[CCBReader load:@"VisionPack"];
-            _visionPack.position = ccp(currentVisionPackX, currentVisionPackY);
-            [_physicsNode addChild:_visionPack];
-            NSLog(@"Added vision pack x:%i, y%i", currentVisionPackX,currentVisionPackY);
-            [VisionPackArray addObject:_visionPack];
-            
-            _visionPackCount++;
-            _spawnVisionPackTime = _spawnVisionPackTime + _spawnVisionPackRate;
-        }
+        _currentVisionPack = (VisionPack*)[CCBReader load:@"VisionPack"];
+        _currentVisionPack.position = [self randomPosition];
+        [_physicsNode addChild:_currentVisionPack];
+        [VisionPackArray addObject:_currentVisionPack];
+        
+        _visionPackCount++;
+        _spawnVisionPackTime = _spawnVisionPackTime + _spawnVisionPackRate;
     }
 }
+
 
 
 
 - (void) createAndRemoveAsteroids{
+    //    earlyGame = 10;
+    //    midGame = 25;
+    //    lateGame = 45;
+    //    extremeGame = 65;
+    
     int shootAsteroidChance, totalChance;
     totalChance = (random() % 1000) + 1; //1-1000
     
-    if(_currentTime <= earlyGame){ // First 10 seconds of the game.
+    if(data.score <= earlyGame){ // First 10 seconds of the game.
         shootAsteroidChance = 8; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
         if(totalChance <= shootAsteroidChance){
+            MAXASTEROIDS = 4;
+            asteroidShotForce = random() % 255 + 170;
+            [self shootAsteroids];
+        }
+    }
+    
+    else if((data.score > earlyGame) && (data.score <= midGame)){
+        shootAsteroidChance = 11; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
+        if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 5;
+            asteroidShotForce = random() % 275 + 190;
             [self shootAsteroids];
+            DECREASEVISIONFACTOR = 0.009;
         }
     }
     
-    if((_currentTime > earlyGame) && (_currentTime <= midGame)){ //10 sec
-        shootAsteroidChance = 10; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
+    else if((data.score > midGame) && (data.score <= lateGame)){
+        shootAsteroidChance = 11; // Will shoot in 3/100 updates.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 6;
+            asteroidShotForce = random() % 275 + 205;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.018;
+            DECREASEVISIONFACTOR = 0.010;
+        }
+    }
+    else if(data.score > lateGame && (data.score <= extremeGame)){
+        shootAsteroidChance = 12; // Will shoot in 4/100 updates.
+        if(totalChance <= shootAsteroidChance){
+            MAXASTEROIDS = 7;
+            asteroidShotForce = random() % 275 + 215;
+            [self shootAsteroids];
+            DECREASEVISIONFACTOR = 0.011;
         }
     }
     
-    if((_currentTime > midGame) && (_currentTime <= lateGame)){ //20sec
-        shootAsteroidChance = 12; // Will shoot in 3/100 updates.
+    else{
+        shootAsteroidChance = 12; // Will shoot in 4/100 updates.
         if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 6;
+            MAXASTEROIDS = 8;
+            asteroidShotForce = random() % 285 + 230;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.021;
+            DECREASEVISIONFACTOR = 0.012;
         }
     }
-    if(_currentTime > lateGame){
-        shootAsteroidChance = 15; // Will shoot in 4/100 updates.
-        if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 6;
-            [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.024;
-        }
-    }
+    
+    [self removeAsteroids];
 }
 
 - (void) shootAsteroids{
-    //    int startX, startY, vecX, vecY, force;
-    //
-    //    if(_asteroidCount < MAXASTEROIDS){ //shoot from top
-    //        force = random() % 200 + 300;
-    //
-    //        _asteroid = (Asteroid1*)[CCBReader load:@"Asteroid1"];
-    //        _asteroid.position = ccp(startX, startY);
-    //        _asteroid.gameplay = self;
-    //        [_physicsNode addChild:_asteroid];
-    //        [asteroidArray addObject:_asteroid];
-    //
-    //        _asteroidCount++;
-    //        [_asteroid.physicsBody applyImpulse:ccpNormalize(ccp(vecX, vecY), force)];
-    //
-    //        NSLog(@"Asteroid count: %i, Asteroid max: %i", _asteroidCount, MAXASTEROIDS);
-    //    }
+    if(_asteroidCount < MAXASTEROIDS){ //shoot from top
+        currentX = random() % 301 +10; //orig is 320, but dont want them to spawn on 0
+        currentY = viewHeight + 10;
+        
+        _currentAsteroid = (Asteroid1*)[CCBReader load:@"Asteroid1"];
+        _currentAsteroid.position = ccp(currentX, currentY);
+        [_physicsNode addChild:_currentAsteroid];
+        [asteroidArray addObject:_currentAsteroid];
+        //[_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
+        
+        _asteroidCount++;
+        
+    }
 }
 
 - (void)decreaseVision{
@@ -435,16 +368,17 @@
         [_vision setScale: _currentVision];
         ResumeDecreaseVision = false;
     }
-    else if(_currentVision <= MAXVISION && _currentVision >= MINVISION){ //when vision is in range, decrease
+    else if(_currentVision <= MAXVISION && _currentVision >= data.MINVISION){ //when vision is in range, decrease
         _currentVision = _currentVision - DECREASEVISIONFACTOR;
         [_vision setScale: _currentVision];
     }
     else{ //when vision hits min
-        _currentVision = MINVISION;
+        _currentVision = data.MINVISION;
         [_vision setScale:_currentVision];
     }
     
 }
+
 
 -(void)restoreVision{
     _vision.position = _currentShip.position;
@@ -456,8 +390,25 @@
             RestoreVisionNow = false;
             ResumeDecreaseVision = true;
         }
-        
-        
+    }
+}
+
+-(void) activateVision{
+    if(RestoreVisionNow == false)
+        [self decreaseVision];
+    if(RestoreVisionNow == true)
+        [self restoreVision];
+}
+-(void) activateInvicibility{
+    if(startInvincible == true && _currentInvinciblePackTime <= _stopInvinciblePackTime){
+        isInvincible = true;
+        _currentInvinciblePackTime++;
+        NSLog(@"You are invincible %i %i", _currentInvinciblePackTime, _stopInvinciblePackTime);
+    }
+    else{
+        _currentInvinciblePackTime = 0;
+        isInvincible = false;
+        startInvincible = false;
     }
 }
 - (void)update:(CCTime)delta{
@@ -474,68 +425,107 @@
     if(_currentVisionPackTime > _spawnVisionPackTime)
         _currentVisionPackTime = _spawnVisionPackTime - _spawnVisionPackRate;
     
-    //    //Accelerometer code.
+    //Accelerometer code.
     CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
     CMAcceleration acceleration = accelerometerData.acceleration;
     
-    CGFloat newXPosition = _currentShip.position.x + acceleration.x * ACCEL * delta;
+    CGFloat newXPosition = _currentShip.position.x + (acceleration.x - data.calibrationAccelerationX) * ACCEL * delta;
     newXPosition = clampf(newXPosition, 30, viewWidth-28);
     
-    CGFloat newYPosition = _currentShip.position.y + acceleration.y * ACCEL * delta;
+    CGFloat newYPosition = _currentShip.position.y + (acceleration.y - data.calibrationAccelerationY) * ACCEL * delta;
     newYPosition = clampf(newYPosition, 20, viewHeight-21);
+    
     _currentShip.position = CGPointMake(newXPosition, newYPosition);
     
     [self createStars];
-    // [self createAndRemoveAsteroids];
     [self createPowerUps];
     [self createVisonPacks];
+    [self activateMagnet];
+    [self activateVision];
+    [self activateInvicibility];
+    [self createAndRemoveAsteroids];
+    [self scrollBackground];
     
-    if(RestoreVisionNow == false)
-        [self decreaseVision];
-    if(RestoreVisionNow == true)
-        [self restoreVision];
-    
-    _scoreLabel.string = [NSString stringWithFormat:@"%d",_score];
+    [_currentShip.physicsBody setVelocity:ccp(0,0)];
+    _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
     _visionPackLabel.string = [NSString stringWithFormat:@"%d",_numVisionPackCollected];
-    //NSLog(@"current time %li", _currentTime);
-    //NSLog(@"%i", numTimeCreateStarsIscalled);
+   // NSLog(@"current time %li", _currentMagnetTime);
+    //NSLog(@"%i, %li", _asteroidCount, _currentTime);
+    //NSLog(@"%i, %i", _currentMagnetTime, _stopMagnetTime);
+    
 }
 
 #pragma mark Collision Methods
-
+-(bool)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Asteroid1:(CCNode *)nodeA Ship:(CCNode *)nodeB
+{
+    if(isInvincible == false){
+        CCLOG(@"You died!");
+        [self openEndScene];
+        return true;
+    }
+    else{
+        [[_physicsNode space] addPostStepBlock:^{
+            [self repelSingleAsteroid: nodeA];
+        } key:nodeA];
+        return false;
+    }
+}
 -(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA Ship:(CCNode *)nodeB
 {
-    CCLOG(@"Something collided with a star!");
     [[_physicsNode space] addPostStepBlock:^{
         [self starRemoved:nodeA];
     } key:nodeA];
 }
 
 
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Ship:(CCNode *)nodeA Asteroid1:(CCNode *)nodeB
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair VisionPack:(CCNode *)nodeA Ship:(CCNode *)nodeB
 {
-    CCLOG(@"You died!");
-    [self openEndScene];
+    [[_physicsNode space] addPostStepBlock:^{
+        [self visionPackRemoved:nodeA];
+    } key:nodeA];
 }
 
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair RepulseAsteroid:(CCNode *)nodeA Ship:(CCNode *)nodeB
+{
+    [[_physicsNode space] addPostStepBlock:^{
+        [self repulseAsteroidRemoved:nodeA];
+    } key:nodeA];
+}
+
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Magnet:(CCNode *)nodeA Ship:(CCNode *)nodeB
+{
+    [[_physicsNode space] addPostStepBlock:^{
+        [self magnetRemoved:nodeA];
+    } key:nodeA];
+}
+
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair InvinciblePack:(CCNode *)nodeA Ship:(CCNode *)nodeB{
+    [[_physicsNode space] addPostStepBlock:^{
+        [self invinciblePackRemoved:nodeA];
+    } key:nodeA];
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair RepulseAsteroid:(CCNode *)nodeA Asteroid1:(CCNode *)nodeB
+{
+    return false;
+}
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair VisionPack:(CCNode *)nodeA Asteroid1:(CCNode *)nodeB
+{
+    return false;
+}
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair Star:(CCNode *)nodeA Asteroid1:(CCNode *)nodeB
 {
     return false;
 }
-
-- (void) starRemoved:(CCNode *)Star {
-    
-    _starCount--;
-    _score++;
-    
-    CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
-    explosion.autoRemoveOnFinish = TRUE;
-    explosion.position = Star.position;
-    [Star.parent addChild:explosion];
-    
-    [Star removeFromParent];
-    [starArray removeObject:Star];
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair Magnet:(CCNode *)nodeA Asteroid1:(CCNode *)nodeB
+{
+    return false;
 }
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair InvinciblePack:(CCNode *)nodeA Asteroid1:(CCNode *)nodeB
+{
+    return false;
+}
+
 
 #pragma mark Accelerometer Methods
 
@@ -568,44 +558,32 @@
     [[CCDirector sharedDirector] replaceScene:endScene];
 }
 
-#pragma mark Power Ups
-
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair RepulseAsteroid:(CCNode *)nodeA Ship:(CCNode *)nodeB
-{
-    CCLOG(@"Something collided with a repluse powerup!");
-    [[_physicsNode space] addPostStepBlock:^{
-        [self repulseAsteroidRemoved:nodeA];
-    } key:nodeA];
+#pragma mark Other Collision methods
+- (void) starRemoved:(CCNode *)Star {
+    
+    _starCount--;
+    data.score++;
+    
+    CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
+    explosion.autoRemoveOnFinish = TRUE;
+    explosion.position = Star.position;
+    [Star.parent addChild:explosion];
+    
+    [Star removeFromParent];
+    [starArray removeObject:Star];
 }
 
-
 - (void) repulseAsteroidRemoved:(CCNode *)RepulseAsteroid {
-    int asteroidX, asteroidY, shipX, shipY;
-    Asteroid1 *_currentAsteroid;
-    
     [RepulseAsteroid removeFromParent];
     [powerUpArray removeObject:RepulseAsteroid];
     
-    shipX = _currentShip.position.x;
-    shipY = _currentShip.position.y;
-    
     for (int i = 0; i < asteroidArray.count; i++) {
         _currentAsteroid = asteroidArray[i];
-        asteroidX = _currentAsteroid.position.x;
-        asteroidY = _currentAsteroid.position.y;
+        [_currentAsteroid.physicsBody setVelocity:ccp(0,0)];
         
-        [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(asteroidX - shipX,asteroidY - shipY)), 500)];
+        [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(_currentAsteroid.position.x - _currentShip.position.x,_currentAsteroid.position.y - _currentShip.position.y)), 550)];
     }
-    
     _powerUpCount--;
-}
-
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair VisionPack:(CCNode *)nodeA Ship:(CCNode *)nodeB
-{
-    CCLOG(@"Something collided with a visionPack!");
-    [[_physicsNode space] addPostStepBlock:^{
-        [self visionPackRemoved:nodeA];
-    } key:nodeA];
 }
 
 -(void) visionPackRemoved:(CCNode *)VisionPack{
@@ -615,19 +593,141 @@
     _visionPackCount--;
 }
 
-- (void)removeAsteroidFromArray:(Asteroid1 *) asteroid
-{
-    [asteroidArray removeObject:asteroid];
+-(void) magnetRemoved: (CCNode *)Magnet{
+    [Magnet removeFromParent];
+    [powerUpArray removeObject:Magnet];
+    _powerUpCount--;
+    
+    startMagnet = true;
+    _currentMagnetTime = 0;
+}
+
+- (void)removeAsteroids{
+    for(int i = 0; i < asteroidArray.count; i++){
+        _currentAsteroid = asteroidArray[i];
+        if((_currentAsteroid.position.x < -20 || _currentAsteroid.position.x > viewWidth + 20|| _currentAsteroid.position.y <-20|| _currentAsteroid.position.y > viewHeight + 11)){
+            
+            [_currentAsteroid removeFromParent];
+            [asteroidArray removeObject:_currentAsteroid];
+            _asteroidCount--;
+        }
+    }
+}
+
+
+-(void) repelSingleAsteroid:(CCNode *) Asteroid1{
+    for(int i = 0; i < asteroidArray.count; i++){
+        if(Asteroid1 == asteroidArray[i]){
+            _currentAsteroid = asteroidArray[i];
+            [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(_currentAsteroid.position.x - _currentShip.position.x,_currentAsteroid.position.y - _currentShip.position.y)), 800)];
+        }
+    }
+}
+
+-(void) activateMagnet{
+    if(_currentMagnetTime >= _stopMagnetTime && [self checkStars] == true){
+        startMagnet = false;
+        _currentMagnetTime = 0;
+    }
+    
+    if(startMagnet == true){
+        
+        [self attractStars];
+        _currentMagnetTime++;
+    }
+    
+}
+
+
+
+-(void)attractStars{  //applies impulses to all stars toward the ship.
+    for(int i = 0; i< starArray.count; i++){
+        _currentStar = starArray[i];
+        [_currentStar.physicsBody setVelocity:ccp(0, 0)];
+        [_currentStar.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(_currentShip.position.x - _currentStar.position.x,_currentShip.position.y - _currentStar.position.y)), _attractStarForce)];
+        
+    }
+}
+
+-(bool)checkStars{
+    bool starIsInBounds = true;
+    
+    for(int i = 0; i< starArray.count; i++){
+        _currentStar = starArray[i];
+        if(_currentStar.position.x < -10 || _currentStar.position.x > viewWidth + 10 || _currentStar.position.y < -10 || _currentStar.position.y > viewHeight + 10){  //if the star is out of bounds
+            starIsInBounds = false;
+            return false;
+            break;
+        }
+    }
+    if(starIsInBounds == true){
+        for(int i = 0; i < starArray.count; i++){
+            _currentStar = starArray[i];
+            [_currentStar.physicsBody setVelocity:ccp(0, 0)];
+        }
+        return true;
+        
+    }
+}
+
+
+
+
+-(void) invinciblePackRemoved: (CCNode *)InvinciblePack{
+    startInvincible = true;
+    
+    [InvinciblePack removeFromParent];
+    [powerUpArray removeObject:InvinciblePack];
+    _powerUpCount--;
 }
 
 #pragma mark - Touch Handling
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    if(_numVisionPackCollected > 0){
-        RestoreVisionNow = true;
-        _numVisionPackCollected--;
+    NSTimeInterval secondTouch = event.timestamp-timeSinceTouch;
+    if (secondTouch<0.40) {
+        if(_numVisionPackCollected > 0){
+            RestoreVisionNow = true;
+            _numVisionPackCollected--;
+        } else
+            NSLog(@"No vision packs");
     }
-    else
-        NSLog(@"No vision packs");
+    timeSinceTouch = event.timestamp;
+}
+
+#pragma mark - Background methods
+
+-(void)scrollBackground{
+    for(CCNode *background in _closestBackground){
+        background.position = ccp(background.position.x, background.position.y - 4);
+        
+        if(background.position.y <= (-1 * background.contentSize.height)){
+            background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
+        }
+    }
+    
+    for(CCNode *background in _furthurBackground){
+        background.position = ccp(background.position.x, background.position.y - 3);
+        
+        if(background.position.y <= (-1 * background.contentSize.height)){
+            background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
+        }
+    }
+    
+    for(CCNode *background in _farthestBackground){
+        background.position = ccp(background.position.x, background.position.y - 2);
+        
+        if(background.position.y <= (-1 * background.contentSize.height)){
+            background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
+        }
+    }
+    
+    for(CCNode *background in _overFarthestBackground){
+        background.position = ccp(background.position.x, background.position.y - 1);
+        
+        if(background.position.y <= (-1 * background.contentSize.height)){
+            background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
+        }
+    }
 }
 @end

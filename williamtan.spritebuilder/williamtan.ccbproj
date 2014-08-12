@@ -84,6 +84,10 @@
 		<dict/>
 		<key>Sprites</key>
 		<dict/>
+		<key>assets</key>
+		<dict/>
+		<key>ccbResources</key>
+		<dict/>
 		<key>ccbResources/ccbButtonHighlighted.png</key>
 		<dict>
 			<key>scaleFrom</key>
