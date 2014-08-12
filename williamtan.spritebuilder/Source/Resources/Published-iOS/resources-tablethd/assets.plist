@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>assets/1000res.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 1}, {3000, 3000}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {3000, 3000}}</string>
+			<key>sourceSize</key>
+			<string>{3000, 3000}</string>
+		</dict>
+		<key>assets/Blast@4x (1).png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2221, 3645}, {233, 233}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {233, 233}}</string>
+			<key>sourceSize</key>
+			<string>{233, 233}</string>
+		</dict>
+		<key>assets/Galaxy@4x.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1471, 3645}, {550, 269}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {550, 269}}</string>
+			<key>sourceSize</key>
+			<string>{550, 269}</string>
+		</dict>
+		<key>assets/HUGESTAR.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 3003}, {959, 924}}</string>
+			<key>offset</key>
+			<string>{0, 20}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{20, 18}, {959, 924}}</string>
+			<key>sourceSize</key>
+			<string>{1000, 1000}</string>
+		</dict>
+		<key>assets/Space Hunter logo.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{927, 3003}, {683, 350}}</string>
+			<key>offset</key>
+			<string>{6, 49}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{165, 276}, {683, 350}}</string>
+			<key>sourceSize</key>
+			<string>{1000, 1000}</string>
+		</dict>
+		<key>assets/Star-8@4x.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2036, 3887}, {197, 189}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {197, 189}}</string>
+			<key>sourceSize</key>
+			<string>{197, 189}</string>
+		</dict>
+		<key>assets/bigwhitepause.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{927, 3688}, {248, 368}}</string>
+			<key>offset</key>
+			<string>{20, 4}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{196, 112}, {248, 368}}</string>
+			<key>sourceSize</key>
+			<string>{600, 600}</string>
+		</dict>
+		<key>assets/grace suggestion.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{3003, 503}, {640, 1136}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {640, 1136}}</string>
+			<key>sourceSize</key>
+			<string>{640, 1136}</string>
+		</dict>
+		<key>assets/obj_bomb1_007@4x.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1637, 3916}, {193, 171}}</string>
+			<key>offset</key>
+			<string>{31, -6}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{63, 49}, {193, 171}}</string>
+			<key>sourceSize</key>
+			<string>{256, 256}</string>
+		</dict>
+		<key>assets/purple.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1279, 3003}, {640, 1136}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {640, 1136}}</string>
+			<key>sourceSize</key>
+			<string>{640, 1136}</string>
+		</dict>
+		<key>assets/rock1.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1832, 3916}, {202, 168}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {202, 168}}</string>
+			<key>sourceSize</key>
+			<string>{202, 168}</string>
+		</dict>
+		<key>assets/rock2.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2023, 3645}, {240, 196}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {240, 196}}</string>
+			<key>sourceSize</key>
+			<string>{240, 196}</string>
+		</dict>
+		<key>assets/rock3.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1471, 3916}, {178, 164}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {178, 164}}</string>
+			<key>sourceSize</key>
+			<string>{178, 164}</string>
+		</dict>
+		<key>assets/rock4.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2227, 3880}, {196, 192}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {196, 192}}</string>
+			<key>sourceSize</key>
+			<string>{196, 192}</string>
+		</dict>
+		<key>assets/ship.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2421, 3880}, {182, 182}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {182, 182}}</string>
+			<key>sourceSize</key>
+			<string>{182, 182}</string>
+		</dict>
+		<key>assets/spacebackground.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2417, 3003}, {1136, 640}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {1136, 640}}</string>
+			<key>sourceSize</key>
+			<string>{1136, 640}</string>
+		</dict>
+		<key>assets/spacship.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{2456, 3645}, {224, 150}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {224, 150}}</string>
+			<key>sourceSize</key>
+			<string>{224, 150}</string>
+		</dict>
+		<key>assets/star.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1177, 3688}, {303, 292}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {303, 292}}</string>
+			<key>sourceSize</key>
+			<string>{304, 292}</string>
+		</dict>
+		<key>assets/white.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{3555, 1}, {500, 500}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {500, 500}}</string>
+			<key>sourceSize</key>
+			<string>{500, 500}</string>
+		</dict>
+		<key>assets/whitepause.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 3964}, {43, 62}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{29, 19}, {43, 62}}</string>
+			<key>sourceSize</key>
+			<string>{100, 100}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>2</integer>
+		<key>size</key>
+		<string>{8192, 8192}</string>
+		<key>textureFileName</key>
+		<string>assets.png</string>
+	</dict>
+</dict>
+</plist>
