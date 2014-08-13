@@ -13,7 +13,6 @@
 @synthesize calibrationAccelerationX;
 @synthesize calibrationAccelerationY;
 @synthesize score;
-@synthesize highScore;
 @synthesize MINVISION;
 
 static GameData *sharedData = nil;

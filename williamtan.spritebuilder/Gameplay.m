@@ -23,19 +23,20 @@
 @implementation Gameplay{
     CCPhysicsNode *_physicsNode;
     CMMotionManager *_motionManager;
-    
     Ship *_currentShip;
-    Asteroid1 *_currentAsteroid;;
+    Asteroid1 *_currentAsteroid;
     VisionPack *_currentVisionPack, *_currentVisionPackinArray;
     Star *_currentStar, *_currentStarInArray;
     RepulseAsteroid *_currentRepulseAsteroid, *_currentPowerUpinArray;
     InvinciblePack *_currentInvinciblePack;
     Magnet *_currentMagnet;
-    CCSprite *_vision;
+    CCSprite *_vision, *tapTutorial, *starTutorial, *sunWarning;
     CCNode *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
     CCLabelTTF *_scoreLabel;
     CCLabelTTF *_visionPackLabel;
+    CCParticleSystem *VisionParticle;
     
+    int shootAsteroidChance, totalChance;
     int _starCount, MAXSTARS, MAXASTEROIDS, currentX, currentY, _asteroidCount, ACCEL;
     int _powerUpCount, MAXPOWERUP;
     int _visionPackCount, MAXVISIONPACK, _numVisionPackCollected;
@@ -49,17 +50,29 @@
     BOOL done, isInvincible, startInvincible, startMagnet;
     double dx, dy, dist, spacing;
     
+    id moveUp, moveDown;
+    
     NSMutableArray *asteroidArray, *starArray, *powerUpArray, *VisionPackArray, *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground;
     int numOverlapping, asteroidShotForce, loopCount, _currentMagnetTime, _stopMagnetTime, _numOfMagnetsCollected, _stopMagnetRate, _attractStarForce, powerUpRandom, _currentInvinciblePackTime, _stopInvinciblePackTime;
-    
+    int numDoubleTap;
     NSTimeInterval timeSinceTouch;
     GameData* data;
     
+    BOOL startVisionParticle;
+    int _currentVisionParticleTime, _stopVisionParticleTime;
+    
+    BOOL startTapTutorial, startStarTutorial, startSunWarning;
+    int currentTutorialTimer, nextTutorialTimer, currentScore, sunWarningDuration;
+    id sunMoveUp;
 }
 
 #pragma mark Game Methods
 
 - (void)didLoadFromCCB {
+    _motionManager = [[CMMotionManager alloc] init];
+    viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
+    viewWidth = [[CCDirector sharedDirector] viewSize].width;   //320
+    
     ACCEL = 1500;
     
     data = [GameData sharedData];
@@ -74,12 +87,13 @@
     _asteroidCount = 0;
     
     _currentPowerUpTime = 0;
-    _spawnPowerUpTime = 500;
+    _spawnPowerUpTime = 600;
     _spawnPowerUpRate = _spawnPowerUpTime; //same as above
     _powerUpCount = 0;
     MAXPOWERUP = 1;
     
-    MAXVISION = 13;
+    data.MINVISION = 4.5;
+    MAXVISION = 13.5;
     DECREASEVISIONFACTOR = 0.008;
     RESTOREVISIONFACTOR = 0.16;
     RestoreVisionNow = false;
@@ -89,15 +103,15 @@
     
     _numVisionPackCollected = 1;
     _currentVisionPackTime = 0;
-    _spawnVisionPackTime = 350;
+    _spawnVisionPackTime = 500;
     _spawnVisionPackRate = _spawnVisionPackTime; //same as above
     _visionPackCount = 0;
     MAXVISIONPACK = 1;
     
     earlyGame = 7;
     midGame = 20;
-    lateGame = 40;
-    extremeGame = 50;
+    lateGame = 30;
+    extremeGame = 40;
     
     isInvincible = false;
     _currentInvinciblePackTime = 0;
@@ -108,25 +122,36 @@
     _stopMagnetTime = 450;
     _attractStarForce = 220;
     startMagnet = false;
-    spacing = 75;
+    spacing = 90;
+    
+    startVisionParticle = false;
+    _currentVisionParticleTime = 0;
+    _stopVisionParticleTime = 200;
+    
+    startSunWarning = false;
+    startTapTutorial = false;
+    startStarTutorial = false;
+    
+    numDoubleTap = 0;
+    currentTutorialTimer = 0;
+    nextTutorialTimer = 120;
+    sunWarningDuration = 40;
+    
+    moveUp = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 50)];
+    moveDown = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, -60)];
+    
+    [tapTutorial runAction:moveUp];
     
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
     //_physicsNode.debugDraw = TRUE;
     
-    _motionManager = [[CMMotionManager alloc] init];
-    viewHeight = [[CCDirector sharedDirector] viewSize].height; //568
-    viewWidth = [[CCDirector sharedDirector] viewSize].width;   //320
     
     _currentShip.positionType = CCPositionTypePoints;
     _vision.positionType = CCPositionTypePoints;
     _currentShip.position = ccp(viewWidth/2, viewHeight/2);
     _vision.position = ccp(viewWidth/2, viewHeight/2);
-    //    _background1.positionType = CCPositionTypePoints;
-    //    _background2.positionType = CCPositionTypePoints;
-    //    _background1.position = ccp(viewWidth/2, viewHeight/2);
-    //    _background2.position = ccp(viewWidth/2, viewHeight * 1.5 );
     
     asteroidArray = [NSMutableArray array];
     starArray = [NSMutableArray array];
@@ -146,7 +171,6 @@
     [_overFarthestBackground addObject:_overFarthestStars2];
     
     
-    
 }
 
 -(CGPoint) randomPosition {
@@ -156,7 +180,7 @@
         loopCount++;
         numOverlapping = 0;
         currentX = clampf(random() % 263+ 30, 30, viewWidth-28); // max x value is 293
-        currentY = clampf(random() % 480+ 20, 20, viewHeight-21); // max y value is 568
+        currentY = clampf(random() % 475+ 25, 20, viewHeight-21); // max y value is 568
         
         for(int i = 0;i < starArray.count; i++){
             _currentStarInArray = starArray[i];
@@ -229,7 +253,7 @@
         
         powerUpRandom = rand() % 10;
         
-        if(powerUpRandom <= 10){ //Magnet 30%
+        if(powerUpRandom <= 2){ //Magnet 30%
             _currentMagnet = (Magnet*)[CCBReader load: @"Magnet"];
             _currentMagnet.position = [self randomPosition];
             
@@ -289,11 +313,10 @@
     //    lateGame = 45;
     //    extremeGame = 65;
     
-    int shootAsteroidChance, totalChance;
     totalChance = (random() % 1000) + 1; //1-1000
     
     if(data.score <= earlyGame){ // First 10 seconds of the game.
-        shootAsteroidChance = 8; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
+        shootAsteroidChance = 9; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 4;
             asteroidShotForce = random() % 255 + 170;
@@ -302,7 +325,7 @@
     }
     
     else if((data.score > earlyGame) && (data.score <= midGame)){
-        shootAsteroidChance = 11; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
+        shootAsteroidChance = 10; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 5;
             asteroidShotForce = random() % 275 + 190;
@@ -331,7 +354,7 @@
     }
     
     else{
-        shootAsteroidChance = 12; // Will shoot in 4/100 updates.
+        shootAsteroidChance = 14; // Will shoot in 4/100 updates.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 8;
             asteroidShotForce = random() % 285 + 230;
@@ -352,10 +375,9 @@
         _currentAsteroid.position = ccp(currentX, currentY);
         [_physicsNode addChild:_currentAsteroid];
         [asteroidArray addObject:_currentAsteroid];
-        //[_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
+        [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
         
         _asteroidCount++;
-        
     }
 }
 
@@ -445,11 +467,13 @@
     [self activateInvicibility];
     [self createAndRemoveAsteroids];
     [self scrollBackground];
+    [self activateVisionPackParticle];
+    [self checkTutorials];
     
     [_currentShip.physicsBody setVelocity:ccp(0,0)];
     _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
     _visionPackLabel.string = [NSString stringWithFormat:@"%d",_numVisionPackCollected];
-   // NSLog(@"current time %li", _currentMagnetTime);
+    // NSLog(@"current time %li", _currentMagnetTime);
     //NSLog(@"%i, %li", _asteroidCount, _currentTime);
     //NSLog(@"%i, %i", _currentMagnetTime, _stopMagnetTime);
     
@@ -459,7 +483,6 @@
 -(bool)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Asteroid1:(CCNode *)nodeA Ship:(CCNode *)nodeB
 {
     if(isInvincible == false){
-        CCLOG(@"You died!");
         [self openEndScene];
         return true;
     }
@@ -546,19 +569,22 @@
 #pragma mark UI Methods
 
 - (void)openSettings {
-    NSLog(@"Settings activated");
     self.paused = YES;
     CCScene *settingsScene = [CCBReader loadAsScene:@"Settings"];
     [[CCDirector sharedDirector] pushScene:settingsScene];
 }
 
 -(void)openEndScene{
-    NSLog(@"EndScene activated");
+    [self save];
+    CCColor *black = [CCColor blackColor];
     CCScene *endScene = [CCBReader loadAsScene:@"EndScene"];
-    [[CCDirector sharedDirector] replaceScene:endScene];
+    CCTransition *transition = [CCTransition transitionFadeWithColor: black duration:0.5f];
+    [[CCDirector sharedDirector] presentScene:endScene  withTransition:transition];
+    
 }
 
 #pragma mark Other Collision methods
+
 - (void) starRemoved:(CCNode *)Star {
     
     _starCount--;
@@ -591,8 +617,32 @@
     [VisionPackArray removeObject:VisionPack];
     _numVisionPackCollected++;
     _visionPackCount--;
+    
+    startVisionParticle = true;
+    CCParticleSystem *VisionParticleOnHit = (CCParticleSystem *)[CCBReader load:@"VisionParticleOnHit"];
+    VisionParticleOnHit.autoRemoveOnFinish = TRUE;
+    VisionParticleOnHit.position = VisionPack.position;
+    [_physicsNode addChild:VisionParticleOnHit];
+    
+    
+    VisionParticle = (CCParticleSystem *)[CCBReader load:@"VisionParticle"];
+    VisionParticle.autoRemoveOnFinish = TRUE;
+    VisionParticle.position = _currentShip.position;
+    [_physicsNode addChild:VisionParticle];
+    
 }
 
+-(void) activateVisionPackParticle{
+    if(startVisionParticle == true && _currentVisionParticleTime <= _stopVisionParticleTime){
+        VisionParticle.position = _currentShip.position;
+        _currentVisionParticleTime++;
+    }
+    else{
+        _currentVisionParticleTime = 0;
+        startVisionParticle = false;
+    }
+    
+}
 -(void) magnetRemoved: (CCNode *)Magnet{
     [Magnet removeFromParent];
     [powerUpArray removeObject:Magnet];
@@ -685,12 +735,21 @@
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     NSTimeInterval secondTouch = event.timestamp-timeSinceTouch;
-    if (secondTouch<0.40) {
+    
+    if (secondTouch < 0.40) {
+        if(_numVisionPackCollected == 0 && startTapTutorial == false && startStarTutorial == false){
+            startSunWarning = true;
+        }
         if(_numVisionPackCollected > 0){
             RestoreVisionNow = true;
             _numVisionPackCollected--;
-        } else
-            NSLog(@"No vision packs");
+            numDoubleTap++;
+            
+            if(numDoubleTap == 1)
+                startTapTutorial = true;
+            else
+                startTapTutorial = false;
+        }
     }
     timeSinceTouch = event.timestamp;
 }
@@ -699,7 +758,7 @@
 
 -(void)scrollBackground{
     for(CCNode *background in _closestBackground){
-        background.position = ccp(background.position.x, background.position.y - 4);
+        background.position = ccp(background.position.x, background.position.y - 8);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
             background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
@@ -707,7 +766,7 @@
     }
     
     for(CCNode *background in _furthurBackground){
-        background.position = ccp(background.position.x, background.position.y - 3);
+        background.position = ccp(background.position.x, background.position.y - 6);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
             background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
@@ -715,7 +774,7 @@
     }
     
     for(CCNode *background in _farthestBackground){
-        background.position = ccp(background.position.x, background.position.y - 2);
+        background.position = ccp(background.position.x, background.position.y - 4);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
             background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
@@ -723,11 +782,57 @@
     }
     
     for(CCNode *background in _overFarthestBackground){
-        background.position = ccp(background.position.x, background.position.y - 1);
+        background.position = ccp(background.position.x, background.position.y - 2);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
             background.position = ccp(background.position.x, background.position.y + background.contentSize.height * 2);
         }
     }
 }
+
+#pragma mark - tutorials
+-(void)checkTutorials{
+    if(startTapTutorial == true && [moveUp isDone] == YES){ //if this is thei first double tap and then move up is done
+        [tapTutorial runAction:moveDown];
+        startStarTutorial = true;
+        startTapTutorial = false;
+    }
+    
+    if(startStarTutorial == true){
+        currentTutorialTimer++;
+        
+        if(currentTutorialTimer == nextTutorialTimer){
+            [starTutorial runAction:moveUp];
+            currentScore = data.score;
+        }
+        if([moveUp isDone] == YES && data.score == (currentScore + 1) && currentTutorialTimer > nextTutorialTimer){ //if the move up is finished and the user colleted a star. the third parameter is to make sure this is run after starTutorial has been movedUp
+            [starTutorial runAction:moveDown];
+            currentTutorialTimer = 0;
+            startStarTutorial = false;
+        }
+        
+    }
+    if(startTapTutorial == false && startStarTutorial == false && startSunWarning == true){
+        if(currentTutorialTimer == 0 && [moveDown isDone] == YES) //if this is first iteration and moving down is done
+            [sunWarning runAction:moveUp];
+        
+        currentTutorialTimer++;
+        
+        if(currentTutorialTimer == sunWarningDuration || _numVisionPackCollected > 0){ //if it is time to move down or a sun has been collected
+            [sunWarning runAction:moveDown];
+            currentTutorialTimer = 0;
+            startSunWarning = false;
+        }
+    }
+    
+}
+#pragma mark highscores
+
+-(IBAction)save{
+    if(data.score > [[MGWU objectForKey:@"highScore"]integerValue]){
+        [MGWU setObject:[NSNumber  numberWithInteger:data.score] forKey:@"highScore"];
+    }
+}
+
+
 @end

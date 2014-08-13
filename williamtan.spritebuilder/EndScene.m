@@ -11,6 +11,7 @@
 #import "GameData.h"
 @implementation EndScene{
     CCLabelTTF  *_scoreLabel;
+    CCLabelTTF *_highScoreLabel;
     GameData *data;
 }
  
@@ -19,6 +20,7 @@
     data = [GameData sharedData];
     self.userInteractionEnabled = TRUE;
      _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
+    _highScoreLabel.string = [NSString stringWithFormat:@"%ld", (long)[[MGWU objectForKey:@"highScore"] integerValue]];
 }
 
 - (void)openGameplay{

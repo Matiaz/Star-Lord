@@ -1102,8 +1102,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.50540000200271606</real>
-							<real>0.86507046222686768</real>
+							<real>0.5</real>
+							<real>0.89999997615814209</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -1116,8 +1116,8 @@
 						<string>Point</string>
 						<key>value</key>
 						<array>
-							<real>0.5</real>
-							<real>0.5</real>
+							<real>0.49920332431793213</real>
+							<real>0.50248610973358154</real>
 						</array>
 					</dict>
 					<dict>
@@ -1171,7 +1171,7 @@
 				<key>displayName</key>
 				<string>LOGO</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>logo</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -1191,7 +1191,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>162.0880126953125</real>
+							<real>160</real>
 							<real>410.28799438476562</real>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -1247,6 +1247,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -1280,11 +1282,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>164.01876831054688</real>
-							<real>93.7779541015625</real>
+							<real>0.5</real>
+							<real>0.20700345933437347</real>
 							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>

@@ -12,6 +12,7 @@
 		881521D31981785800AC2E9E /* VisionPack.m in Sources */ = {isa = PBXBuildFile; fileRef = 881521D21981785800AC2E9E /* VisionPack.m */; };
 		883C7D871975A75600B626B4 /* EndScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 883C7D861975A75600B626B4 /* EndScene.m */; };
 		884C14741980436B0078FDAE /* RepulseAsteroid.m in Sources */ = {isa = PBXBuildFile; fileRef = 884C14731980436B0078FDAE /* RepulseAsteroid.m */; };
+		884E6628199AEF98002DE5BC /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 884E6627199AEF98002DE5BC /* GameData.m */; };
 		885468B819706AF000AA122E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885468B719706AF000AA122E /* CoreMotion.framework */; };
 		885468BC1970751C00AA122E /* Ship.m in Sources */ = {isa = PBXBuildFile; fileRef = 885468BB1970751C00AA122E /* Ship.m */; };
 		885468C31970DB0600AA122E /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 885468C21970DB0600AA122E /* Settings.m */; };
@@ -99,7 +100,6 @@
 		88996EB819915CB1005FF8D5 /* send-field-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 88996E7219915CB0005FF8D5 /* send-field-landscape.png */; };
 		88A205D7197205530015925F /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A205D6197205530015925F /* Star.m */; };
 		88A33E20199968E100B82D13 /* InvinciblePack.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A33E1F199968E100B82D13 /* InvinciblePack.m */; };
-		88DFDCD41991688E00FD405F /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 88DFDCD31991688E00FD405F /* GameData.m */; };
 		88FCDD5319757C8D00D3D5EA /* Asteroid1.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FCDD5219757C8D00D3D5EA /* Asteroid1.m */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
@@ -158,6 +158,8 @@
 		883C7D861975A75600B626B4 /* EndScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndScene.m; sourceTree = "<group>"; };
 		884C14721980436B0078FDAE /* RepulseAsteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepulseAsteroid.h; path = Source/RepulseAsteroid.h; sourceTree = "<group>"; };
 		884C14731980436B0078FDAE /* RepulseAsteroid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepulseAsteroid.m; path = Source/RepulseAsteroid.m; sourceTree = "<group>"; };
+		884E6626199AEF98002DE5BC /* GameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameData.h; path = Source/GameData.h; sourceTree = "<group>"; };
+		884E6627199AEF98002DE5BC /* GameData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameData.m; path = Source/GameData.m; sourceTree = "<group>"; };
 		885468B719706AF000AA122E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		885468BA1970751C00AA122E /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ship.h; path = Source/Ship.h; sourceTree = "<group>"; };
 		885468BB1970751C00AA122E /* Ship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Ship.m; path = Source/Ship.m; sourceTree = "<group>"; };
@@ -250,8 +252,6 @@
 		88A205D6197205530015925F /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Star.m; path = Source/Star.m; sourceTree = "<group>"; };
 		88A33E1E199968E100B82D13 /* InvinciblePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InvinciblePack.h; path = Source/InvinciblePack.h; sourceTree = "<group>"; };
 		88A33E1F199968E100B82D13 /* InvinciblePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InvinciblePack.m; path = Source/InvinciblePack.m; sourceTree = "<group>"; };
-		88DFDCD21991688E00FD405F /* GameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameData.h; path = Source/GameData.h; sourceTree = "<group>"; };
-		88DFDCD31991688E00FD405F /* GameData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameData.m; path = Source/GameData.m; sourceTree = "<group>"; };
 		88FCDD5119757C8D00D3D5EA /* Asteroid1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asteroid1.h; path = Source/Asteroid1.h; sourceTree = "<group>"; };
 		88FCDD5219757C8D00D3D5EA /* Asteroid1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asteroid1.m; path = Source/Asteroid1.m; sourceTree = "<group>"; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
@@ -428,12 +428,12 @@
 				B737893E1807617C0076A88C /* AppDelegate.m */,
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
-				88DFDCD21991688E00FD405F /* GameData.h */,
-				88DFDCD31991688E00FD405F /* GameData.m */,
 				883C7D851975A75600B626B4 /* EndScene.h */,
 				883C7D861975A75600B626B4 /* EndScene.m */,
 				884C14721980436B0078FDAE /* RepulseAsteroid.h */,
 				884C14731980436B0078FDAE /* RepulseAsteroid.m */,
+				884E6626199AEF98002DE5BC /* GameData.h */,
+				884E6627199AEF98002DE5BC /* GameData.m */,
 				88011D61196DBD3100FE3CB8 /* Gameplay.h */,
 				88011D62196DBD3100FE3CB8 /* Gameplay.m */,
 				88A33E1E199968E100B82D13 /* InvinciblePack.h */,
@@ -744,6 +744,7 @@
 				884C14741980436B0078FDAE /* RepulseAsteroid.m in Sources */,
 				88FCDD5319757C8D00D3D5EA /* Asteroid1.m in Sources */,
 				88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */,
+				884E6628199AEF98002DE5BC /* GameData.m in Sources */,
 				88A33E20199968E100B82D13 /* InvinciblePack.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				885468BC1970751C00AA122E /* Ship.m in Sources */,
@@ -751,7 +752,6 @@
 				883C7D871975A75600B626B4 /* EndScene.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				881521D31981785800AC2E9E /* VisionPack.m in Sources */,
-				88DFDCD41991688E00FD405F /* GameData.m in Sources */,
 				8898E21E19907FA40066AD4D /* Magnet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

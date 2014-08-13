@@ -13,7 +13,6 @@
 @property (nonatomic) double calibrationAccelerationX;
 @property (nonatomic) double calibrationAccelerationY;
 @property (nonatomic) int score;
-@property (nonatomic) int highScore;
 @property (nonatomic) float MINVISION;
 +(GameData *) sharedData;
 @end
