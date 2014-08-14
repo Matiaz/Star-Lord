@@ -267,8 +267,8 @@
 			<key>points</key>
 			<array>
 				<array>
-					<real>1.34375</real>
-					<real>-9.62109375</real>
+					<real>-0.593780517578125</real>
+					<real>-13.765625</real>
 				</array>
 				<array>
 					<real>-11.98046875</real>
@@ -291,19 +291,9 @@
 			<array>
 				<array>
 					<array>
-						<real>1.34375</real>
-						<real>-9.62109375</real>
-					</array>
-					<array>
 						<real>12.19921875</real>
 						<real>-13.75390625</real>
 					</array>
-					<array>
-						<real>12.21875</real>
-						<real>12.4921875</real>
-					</array>
-				</array>
-				<array>
 					<array>
 						<real>12.21875</real>
 						<real>12.4921875</real>
@@ -317,8 +307,8 @@
 						<real>-12.32421875</real>
 					</array>
 					<array>
-						<real>1.34375</real>
-						<real>-9.62109375</real>
+						<real>-0.593780517578125</real>
+						<real>-13.765625</real>
 					</array>
 				</array>
 			</array>

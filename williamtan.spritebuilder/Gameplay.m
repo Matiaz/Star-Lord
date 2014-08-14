@@ -34,6 +34,7 @@
     CCNode *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
     CCLabelTTF *_scoreLabel;
     CCLabelTTF *_visionPackLabel;
+    CCButton *recalibrateButton, *mainMenuButton, *resumeButton;
     CCParticleSystem *VisionParticle;
     
     int shootAsteroidChance, totalChance;
@@ -50,7 +51,7 @@
     BOOL done, isInvincible, startInvincible, startMagnet;
     double dx, dy, dist, spacing;
     
-    id moveUp, moveDown;
+    id moveUp, moveDown, recalibrateMoveIn, mainMenuMoveIn, resumeMoveIn;
     
     NSMutableArray *asteroidArray, *starArray, *powerUpArray, *VisionPackArray, *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground;
     int numOverlapping, asteroidShotForce, loopCount, _currentMagnetTime, _stopMagnetTime, _numOfMagnetsCollected, _stopMagnetRate, _attractStarForce, powerUpRandom, _currentInvinciblePackTime, _stopInvinciblePackTime;
@@ -61,9 +62,10 @@
     BOOL startVisionParticle;
     int _currentVisionParticleTime, _stopVisionParticleTime;
     
-    BOOL startTapTutorial, startStarTutorial, startSunWarning, shipBlownUp, startFlyTutorial;
-    int currentTutorialTimer, nextTutorialTimer, currentScore, sunWarningDuration;
+    BOOL startTapTutorial, startStarTutorial, startSunWarning, shipBlownUp, startFlyTutorial, startStallAsteroid;
+    int currentTutorialTimer, nextTutorialTimer, currentScore, sunWarningDuration, currentFlyTutorialDuration, stopFlyTutorialDuration;
     id sunMoveUp;
+    int currentStallAsteroidTime, stopStallAsteroidTime;
 }
 
 #pragma mark Game Methods
@@ -77,6 +79,7 @@
     
     data = [GameData sharedData];
     data.score = 0;
+    _numVisionPackCollected = 1;
     
     _currentTime = 0;
     _spawnStarTime = 60;
@@ -101,7 +104,6 @@
     _currentVision = data.MINVISION; //sets the vision when the game starts
     [_vision setScale:_currentVision];
     
-    _numVisionPackCollected = 1;
     _currentVisionPackTime = 0;
     _spawnVisionPackTime = 500;
     _spawnVisionPackRate = _spawnVisionPackTime; //same as above
@@ -135,13 +137,20 @@
     
     numDoubleTap = 0;
     currentTutorialTimer = 0;
-    nextTutorialTimer = 120;
-    sunWarningDuration = 40;
+    nextTutorialTimer = 90;
+    sunWarningDuration = 35;
+    currentFlyTutorialDuration = 0;
+    stopFlyTutorialDuration = 45;
     
+    currentStallAsteroidTime = 1;  //used after a repulse to make sure no asteroids look like they are not being repulsed, start at one to fix shoot bug
+    stopStallAsteroidTime = 300;
+    startStallAsteroid = false;
     
     moveUp = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 50)];
     moveDown = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, -60)];
-    
+    recalibrateMoveIn = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 400)];
+    mainMenuMoveIn = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 300)];
+    resumeMoveIn = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 200)];
     [tapTutorial runAction:moveUp];
     
     shipBlownUp = false;
@@ -370,7 +379,7 @@
 }
 
 - (void) shootAsteroids{
-    if(_asteroidCount < MAXASTEROIDS){ //shoot from top
+    if(_asteroidCount < MAXASTEROIDS && (currentStallAsteroidTime == 1 || currentStallAsteroidTime >= stopStallAsteroidTime)){ //if currentStallAsteroiTime == 1, commence regular shooting, however, the second condtion is a mechnaism to stop asteroid from shooting after a repulse asteroid is collected.
         currentX = random() % 301 +10; //orig is 320, but dont want them to spawn on 0
         currentY = viewHeight + 10;
         
@@ -394,6 +403,9 @@
         [_physicsNode addChild:_currentAsteroid];
         [asteroidArray addObject:_currentAsteroid];
         [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
+        
+        currentStallAsteroidTime = 1;
+        startStallAsteroid = false;
     }
 }
 
@@ -445,7 +457,8 @@
     }
     else{
         _currentInvinciblePackTime = 0;
-        isInvincible = false;
+        //isInvincible = false;
+        isInvincible = true;
         startInvincible = false;
     }
 }
@@ -485,6 +498,8 @@
         [self createAndRemoveAsteroids];
         [self activateVisionPackParticle];
         [self checkTutorials];
+        if(startStallAsteroid == true)
+            currentStallAsteroidTime++;
     }
     
     [self scrollBackground];
@@ -495,8 +510,6 @@
     // NSLog(@"current time %li", _currentMagnetTime);
     //NSLog(@"%i, %li", _asteroidCount, _currentTime);
     //NSLog(@"%i, %i", _currentMagnetTime, _stopMagnetTime);
-    NSLog(@"%i", _asteroidCount);
-    
 }
 
 #pragma mark Collision Methods
@@ -602,25 +615,56 @@
     self.paused = YES;
     CCScene *settingsScene = [CCBReader loadAsScene:@"Settings"];
     [[CCDirector sharedDirector] pushScene:settingsScene];
+//        self.paused = YES;
+//    [recalibrateButton runAction:recalibrateMoveIn];
+//    [mainMenuButton runAction:mainMenuMoveIn];
+//    [resumeButton runAction:resumeMoveIn];
 }
 
+-(void)recalibrate{
+    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+    CMAcceleration acceleration = accelerometerData.acceleration;
+    data.calibrationAccelerationX = acceleration.x;
+    data.calibrationAccelerationY = acceleration.y;
+    self.paused = false;
+}
+
+-(void)openMainScene{
+    CCColor *black = [CCColor blackColor];
+    CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
+    CCTransition *transition = [CCTransition transitionFadeWithColor: black duration:0.5f];
+    [[CCDirector sharedDirector] presentScene:mainScene  withTransition:transition];
+}
 -(void)openEndScene{
     [self save];
     CCColor *black = [CCColor blackColor];
     CCScene *endScene = [CCBReader loadAsScene:@"EndScene"];
     CCTransition *transition = [CCTransition transitionFadeWithColor: black duration:0.5f];
     [[CCDirector sharedDirector] presentScene:endScene  withTransition:transition];
-    
+}
+
+-(void)resume{
+    self.paused = false;
 }
 
 #pragma mark Other Collision methods
 
 - (void) starRemoved:(CCNode *)Star {
-    
+    CCParticleSystem *explosion;
     _starCount--;
     data.score++;
     
-    CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
+    int randomNum = random() % 4;
+    
+    if(randomNum == 0)
+    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
+    else if(randomNum == 1)
+    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion2"];
+    else if(randomNum == 2)
+    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion3"];
+    else if(randomNum == 3)
+    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion4"];
+    
     explosion.autoRemoveOnFinish = TRUE;
     explosion.position = Star.position;
     [Star.parent addChild:explosion];
@@ -644,6 +688,7 @@
         
         [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(_currentAsteroid.position.x - _currentShip.position.x,_currentAsteroid.position.y - _currentShip.position.y)), 750)];
     }
+    startStallAsteroid = true;
     _powerUpCount--;
 }
 
@@ -770,7 +815,7 @@
     NSTimeInterval secondTouch = event.timestamp-timeSinceTouch;
     
     if (secondTouch < 0.40){
-        if(_numVisionPackCollected == 0 && startTapTutorial == false && startStarTutorial == false && [moveDown isDone] == YES && [moveUp isDone] == YES){
+        if(_numVisionPackCollected == 0 && startTapTutorial == false && startStarTutorial == false && startFlyTutorial == false && [moveDown isDone] == YES && [moveUp isDone] == YES){
             startSunWarning = true;
         }
         if(_numVisionPackCollected > 0){
@@ -827,9 +872,27 @@
 -(void)checkTutorials{
     if(startTapTutorial == true && [moveUp isDone] == YES){ //if this is thei first double tap and then move up is done
         [tapTutorial runAction:moveDown];
-        startStarTutorial = true;
+        startFlyTutorial = true;
         startTapTutorial = false;
     }
+    
+    if(startFlyTutorial == true){
+        currentTutorialTimer++;
+        
+        if(currentTutorialTimer == nextTutorialTimer){
+            [flyTutorial runAction:moveUp];
+        }
+        if([moveUp isDone] == YES && currentTutorialTimer > nextTutorialTimer){
+            currentFlyTutorialDuration++;
+            
+            if(currentFlyTutorialDuration == stopFlyTutorialDuration){
+                [flyTutorial runAction:moveDown];
+                currentTutorialTimer = 0;
+                startStarTutorial = true;
+                startFlyTutorial = false;
+            }
+        }
+}
     
     if(startStarTutorial == true){
         currentTutorialTimer++;
@@ -845,7 +908,7 @@
         }
         
     }
-    if(startTapTutorial == false && startStarTutorial == false && startSunWarning == true){
+    if(startTapTutorial == false && startStarTutorial == false && startFlyTutorial == false && startSunWarning == true){
         if(currentTutorialTimer == 0 && [moveDown isDone] == YES) //if this is first iteration and moving down is done
             [sunWarning runAction:moveUp];
         
