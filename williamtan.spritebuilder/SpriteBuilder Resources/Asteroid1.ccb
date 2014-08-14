@@ -35,6 +35,11 @@
 	<false/>
 	<key>nodeGraph</key>
 	<dict>
+		<key>animatedProperties</key>
+		<dict>
+			<key>0</key>
+			<dict/>
+		</dict>
 		<key>baseClass</key>
 		<string>CCSprite</string>
 		<key>children</key>
@@ -74,74 +79,64 @@
 			<key>points</key>
 			<array>
 				<array>
-					<real>14.034049034118652</real>
-					<real>0.69570821523666382</real>
+					<real>41.699188232421875</real>
+					<real>20.69140625</real>
 				</array>
 				<array>
-					<real>0.055978383868932724</real>
-					<real>16.629535675048828</real>
+					<real>33.632781982421875</real>
+					<real>1.59765625</real>
 				</array>
 				<array>
-					<real>8.9898653030395508</real>
-					<real>41.321731567382812</real>
+					<real>10.878875732421875</real>
+					<real>3.30078125</real>
 				</array>
 				<array>
-					<real>36.487049102783203</real>
-					<real>42.272346496582031</real>
+					<real>2.730438232421875</real>
+					<real>12.859375</real>
 				</array>
 				<array>
-					<real>49.888423919677734</real>
-					<real>21.880851745605469</real>
+					<real>1.656219482421875</real>
+					<real>33.8046875</real>
 				</array>
 				<array>
-					<real>41.276134490966797</real>
-					<real>5.5393071174621582</real>
+					<real>14.476531982421875</real>
+					<real>41.87109375</real>
 				</array>
 				<array>
-					<real>29.072849273681641</real>
-					<real>6.7919044494628906</real>
+					<real>36.972625732421875</real>
+					<real>34.29296875</real>
 				</array>
 			</array>
 			<key>polygons</key>
 			<array>
 				<array>
 					<array>
-						<real>29.072849273681641</real>
-						<real>6.7919044494628906</real>
+						<real>36.972625732421875</real>
+						<real>34.29296875</real>
 					</array>
 					<array>
-						<real>41.276134490966797</real>
-						<real>5.5393071174621582</real>
+						<real>14.476531982421875</real>
+						<real>41.87109375</real>
 					</array>
 					<array>
-						<real>49.888423919677734</real>
-						<real>21.880851745605469</real>
-					</array>
-				</array>
-				<array>
-					<array>
-						<real>49.888423919677734</real>
-						<real>21.880851745605469</real>
+						<real>1.656219482421875</real>
+						<real>33.8046875</real>
 					</array>
 					<array>
-						<real>36.487049102783203</real>
-						<real>42.272346496582031</real>
+						<real>2.730438232421875</real>
+						<real>12.859375</real>
 					</array>
 					<array>
-						<real>8.9898653030395508</real>
-						<real>41.321731567382812</real>
+						<real>10.878875732421875</real>
+						<real>3.30078125</real>
 					</array>
 					<array>
-						<real>0.055978383868932724</real>
-						<real>16.629535675048828</real>
+						<real>33.632781982421875</real>
+						<real>1.59765625</real>
 					</array>
 					<array>
-						<real>14.034049034118652</real>
-						<real>0.69570821523666382</real>
-					</array>
-					<array>
-						<real>29.072849273681641</real>
-						<real>6.7919044494628906</real>
+						<real>41.699188232421875</real>
+						<real>20.69140625</real>
 					</array>
 				</array>
 			</array>
@@ -202,7 +197,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>assets/rock1.png</string>
+					<string>assets/rock4.png</string>
 				</array>
 			</dict>
 			<dict>
@@ -220,6 +215,8 @@
 			</dict>
 		</array>
 		<key>selected</key>
+		<true/>
+		<key>seqExpanded</key>
 		<true/>
 	</dict>
 	<key>notes</key>
@@ -270,55 +267,19 @@
 			<key>chainedSequenceId</key>
 			<integer>0</integer>
 			<key>length</key>
-			<real>2.6666667461395264</real>
+			<real>0.033333335071802139</real>
 			<key>name</key>
-			<string>Version 1</string>
+			<string>1</string>
 			<key>offset</key>
-			<real>0.066666670143604279</real>
+			<real>0.0</real>
 			<key>position</key>
-			<real>0.40000000596046448</real>
+			<real>0.0</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
 			<real>251.880615234375</real>
 			<key>sequenceId</key>
 			<integer>0</integer>
-			<key>soundChannel</key>
-			<dict>
-				<key>isExpanded</key>
-				<false/>
-				<key>keyframes</key>
-				<array/>
-				<key>type</key>
-				<integer>11</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>autoPlay</key>
-			<false/>
-			<key>callbackChannel</key>
-			<dict>
-				<key>keyframes</key>
-				<array/>
-				<key>type</key>
-				<integer>12</integer>
-			</dict>
-			<key>chainedSequenceId</key>
-			<integer>-1</integer>
-			<key>length</key>
-			<real>10</real>
-			<key>name</key>
-			<string>Version 2</string>
-			<key>offset</key>
-			<real>0.0</real>
-			<key>position</key>
-			<real>0.0</real>
-			<key>resolution</key>
-			<real>30</real>
-			<key>scale</key>
-			<real>128</real>
-			<key>sequenceId</key>
-			<integer>1</integer>
 			<key>soundChannel</key>
 			<dict>
 				<key>isExpanded</key>

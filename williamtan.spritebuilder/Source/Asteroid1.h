@@ -9,5 +9,4 @@
 #import "CCSprite.h"
 
 @interface Asteroid1 : CCSprite
-
 @end
