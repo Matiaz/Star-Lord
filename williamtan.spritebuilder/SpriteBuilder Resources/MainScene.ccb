@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>37</integer>
+	<integer>38</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -1102,8 +1102,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.5</real>
-							<real>0.89999997615814209</real>
+							<real>0.49999961256980896</real>
+							<real>0.89788722991943359</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -1273,8 +1273,8 @@
 									<integer>3</integer>
 									<key>value</key>
 									<array>
-										<real>500</real>
-										<real>115</real>
+										<real>1.5625</real>
+										<real>0.20246478915214539</real>
 									</array>
 								</dict>
 								<dict>
@@ -1291,8 +1291,26 @@
 									<integer>3</integer>
 									<key>value</key>
 									<array>
-										<real>160</real>
-										<real>115</real>
+										<real>0.5</real>
+										<real>0.20246478915214539</real>
+									</array>
+								</dict>
+								<dict>
+									<key>easing</key>
+									<dict>
+										<key>type</key>
+										<integer>1</integer>
+									</dict>
+									<key>name</key>
+									<string>position</string>
+									<key>time</key>
+									<real>4.1333332061767578</real>
+									<key>type</key>
+									<integer>3</integer>
+									<key>value</key>
+									<array>
+										<real>0.5</real>
+										<real>0.1672535240650177</real>
 									</array>
 								</dict>
 							</array>
@@ -1328,8 +1346,8 @@
 					<dict>
 						<key>baseValue</key>
 						<array>
-							<real>160</real>
-							<real>117.57796478271484</real>
+							<real>0.5</real>
+							<real>0.20700345933437347</real>
 						</array>
 						<key>name</key>
 						<string>position</string>
@@ -1337,11 +1355,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>160</real>
-							<real>115</real>
+							<real>0.5</real>
+							<real>0.1672535240650177</real>
 							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -1362,9 +1380,9 @@
 						<string>ScaleLock</string>
 						<key>value</key>
 						<array>
-							<real>0.44825509190559387</real>
-							<real>0.44916674494743347</real>
-							<false/>
+							<real>0.55000001192092896</real>
+							<real>0.55000001192092896</real>
+							<true/>
 							<integer>0</integer>
 						</array>
 					</dict>
@@ -1387,7 +1405,7 @@
 						<key>value</key>
 						<array>
 							<real>500</real>
-							<real>375</real>
+							<real>150</real>
 							<integer>0</integer>
 							<integer>0</integer>
 						</array>
@@ -1432,7 +1450,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/PLAY.png</string>
+							<string>assets/playon.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -1443,7 +1461,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/PLAYTOUCHED.png</string>
+							<string>assets/playoff.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -1467,7 +1485,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/PLAYTOUCHED.png</string>
+							<string>assets/playoff.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -1486,7 +1504,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/PLAYTOUCHED.png</string>
+							<string>assets/playoff.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -1630,6 +1648,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 				<key>seqExpanded</key>
 				<true/>
 			</dict>
@@ -1771,9 +1791,9 @@
 			<key>name</key>
 			<string>Default Timeline</string>
 			<key>offset</key>
-			<real>0.0</real>
+			<real>0.76614570617675781</real>
 			<key>position</key>
-			<real>2.7666666507720947</real>
+			<real>4.1333332061767578</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

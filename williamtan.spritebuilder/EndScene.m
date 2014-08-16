@@ -99,6 +99,12 @@
     }
 }
 
+-(void)openMainMenu{
+    CCColor *black = [CCColor blackColor];
+    CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
+    CCTransition *transition = [CCTransition transitionFadeWithColor: black duration:0.5f];
+    [[CCDirector sharedDirector] presentScene:mainScene  withTransition:transition];
+}
 #pragma Mark accelerometer
 - (void)onEnter
 {

@@ -336,18 +336,21 @@
 
 
 - (void) createAndRemoveAsteroids{
-    //    earlyGame = 10;
-    //    midGame = 25;
-    //    lateGame = 45;
-    //    extremeGame = 65;
+//    earlyGame = 7;
+//    midGame = 27;
+//    lateGame = 37;
+//    extremeGame = 47;
     
     totalChance = (random() % 1000) + 1; //1-1000
+    if(data.score == 0){
+        MAXASTEROIDS = 0;
+    }
     
-    if(data.score <= earlyGame){ // First 10 seconds of the game.
+    else if(data.score <= earlyGame){ // First 10 seconds of the game.
         shootAsteroidChance = 9; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 3;
-            asteroidShotForce = random() % 255 + 170;
+            asteroidShotForce = random() % 255 + 165;
             [self shootAsteroids];
         }
     }
@@ -358,7 +361,7 @@
             MAXASTEROIDS = 4;
             asteroidShotForce = random() % 275 + 190;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.009;
+            DECREASEVISIONFACTOR = 0.0095;
         }
     }
     
@@ -368,7 +371,7 @@
             MAXASTEROIDS = 5;
             asteroidShotForce = random() % 275 + 205;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.010;
+            DECREASEVISIONFACTOR = 0.011;
         }
     }
     else if(data.score > lateGame && (data.score <= extremeGame)){
@@ -377,17 +380,17 @@
             MAXASTEROIDS = 6;
             asteroidShotForce = random() % 275 + 215;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.011;
+            DECREASEVISIONFACTOR = 0.012;
         }
     }
     
     else{
-        shootAsteroidChance = 14; // Will shoot in 4/100 updates.
+        shootAsteroidChance = 15; // Will shoot in 4/100 updates.
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 7;
             asteroidShotForce = random() % 285 + 230;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.012;
+            DECREASEVISIONFACTOR = 0.013;
         }
     }
     
@@ -518,7 +521,7 @@
     }
     
     [self scrollBackground];
-   // [self changeGalaxy];
+    //[self changeGalaxy];
     
     [_currentShip.physicsBody setVelocity:ccp(0,0)];
     _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
@@ -1031,10 +1034,8 @@
         CCParticleSystem *blueGalaxy= (CCParticleSystem *)[CCBReader load:@"Galaxy2"];
         blueGalaxy.position = redGalaxy.position;
         [galaxyNode addChild:blueGalaxy];
-        blueGalaxy.autoRemoveOnFinish = true;
 
-        [redGalaxy removeFromParent];
-        
+        [redGalaxy removeFromParentAndCleanup:true];
         nextGalaxy = false;
     }
 }
