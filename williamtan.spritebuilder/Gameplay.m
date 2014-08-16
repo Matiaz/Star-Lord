@@ -22,6 +22,7 @@
 
 @implementation Gameplay{
     CCPhysicsNode *_physicsNode;
+    CCNode *galaxyNode;
     CMMotionManager *_motionManager;
     Ship *_currentShip;
     Asteroid1 *_currentAsteroid;
@@ -30,12 +31,12 @@
     RepulseAsteroid *_currentRepulseAsteroid, *_currentPowerUpinArray;
     InvinciblePack *_currentInvinciblePack;
     Magnet *_currentMagnet;
-    CCSprite *_vision, *tapTutorial, *starTutorial, *sunWarning, *flyTutorial;
+    CCSprite *_vision, *tapTutorial, *starTutorial, *sunWarning, *flyTutorial, *settingsCover;
     CCNode *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
     CCLabelTTF *_scoreLabel;
     CCLabelTTF *_visionPackLabel;
     CCButton *recalibrateButton, *mainMenuButton, *resumeButton;
-    CCParticleSystem *VisionParticle;
+    CCParticleSystem *VisionParticle, *redGalaxy;
     
     int shootAsteroidChance, totalChance;
     int _starCount, MAXSTARS, MAXASTEROIDS, currentX, currentY, _asteroidCount, ACCEL;
@@ -51,9 +52,9 @@
     BOOL done, isInvincible, startInvincible, startMagnet;
     double dx, dy, dist, spacing;
     
-    id moveUp, moveDown, recalibrateMoveIn, mainMenuMoveIn, resumeMoveIn;
+    id moveUp, moveDown, recalibrateMoveIn, mainMenuMoveIn, resumeMoveIn, recalibrateMoveOut, mainMenuMoveOut, resumeMoveOut;;
     
-    NSMutableArray *asteroidArray, *starArray, *powerUpArray, *VisionPackArray, *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground;
+    NSMutableArray *asteroidArray, *starArray, *powerUpArray, *VisionPackArray, *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground, *asteroidVelocityArray;
     int numOverlapping, asteroidShotForce, loopCount, _currentMagnetTime, _stopMagnetTime, _numOfMagnetsCollected, _stopMagnetRate, _attractStarForce, powerUpRandom, _currentInvinciblePackTime, _stopInvinciblePackTime;
     int numDoubleTap;
     NSTimeInterval timeSinceTouch;
@@ -62,10 +63,10 @@
     BOOL startVisionParticle;
     int _currentVisionParticleTime, _stopVisionParticleTime;
     
-    BOOL startTapTutorial, startStarTutorial, startSunWarning, shipBlownUp, startFlyTutorial, startStallAsteroid;
+    BOOL startTapTutorial, startStarTutorial, startSunWarning, shipBlownUp, startFlyTutorial, startStallAsteroid, settingsIsOpen, nextGalaxy;
     int currentTutorialTimer, nextTutorialTimer, currentScore, sunWarningDuration, currentFlyTutorialDuration, stopFlyTutorialDuration;
     id sunMoveUp;
-    int currentStallAsteroidTime, stopStallAsteroidTime;
+    int currentStallAsteroidTime, stopStallAsteroidTime, numTimesResumePressed, numTimesCalibratePressed, numTimesMainPressed, numTimesIteratedGalaxy;
 }
 
 #pragma mark Game Methods
@@ -98,7 +99,7 @@
     data.MINVISION = 4.5;
     MAXVISION = 13.5;
     DECREASEVISIONFACTOR = 0.008;
-    RESTOREVISIONFACTOR = 0.16;
+    RESTOREVISIONFACTOR = 0.17;
     RestoreVisionNow = false;
     ResumeDecreaseVision = false;
     _currentVision = data.MINVISION; //sets the vision when the game starts
@@ -124,7 +125,7 @@
     _stopMagnetTime = 450;
     _attractStarForce = 220;
     startMagnet = false;
-    spacing = 90;
+    spacing = 95;
     
     startVisionParticle = false;
     _currentVisionParticleTime = 0;
@@ -146,14 +147,27 @@
     stopStallAsteroidTime = 300;
     startStallAsteroid = false;
     
+    numTimesIteratedGalaxy = 0;
+    nextGalaxy = true;
     moveUp = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 50)];
     moveDown = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, -60)];
-    recalibrateMoveIn = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 400)];
-    mainMenuMoveIn = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 300)];
-    resumeMoveIn = [CCActionMoveTo actionWithDuration:0.4f position:ccp(viewWidth/2, 200)];
+    recalibrateMoveIn = [CCActionMoveTo actionWithDuration:0.3f position:ccp(viewWidth/2, 400)];
+    recalibrateMoveOut = [CCActionMoveTo actionWithDuration:0.3f position:ccp(viewWidth +200, 400)];
+    mainMenuMoveIn = [CCActionMoveTo actionWithDuration:0.3f position:ccp(viewWidth/2, 300)];
+    mainMenuMoveOut = [CCActionMoveTo actionWithDuration:0.3f position:ccp(viewWidth +200, 300)];
+    resumeMoveIn = [CCActionMoveTo actionWithDuration:0.3f position:ccp(viewWidth/2, 200)];
+    resumeMoveOut = [CCActionMoveTo actionWithDuration:0.3f position:ccp(viewWidth +200, 200)];
+    
     [tapTutorial runAction:moveUp];
     
     shipBlownUp = false;
+    settingsIsOpen = false;
+    
+    settingsCover.visible = NO;
+    
+    numTimesCalibratePressed = 0;
+    numTimesMainPressed = 0;
+    numTimesResumePressed = 0;
     self.userInteractionEnabled = TRUE;
     _currentShip.physicsBody.allowsRotation = FALSE;
     _physicsNode.collisionDelegate = self;
@@ -166,6 +180,7 @@
     _vision.position = ccp(viewWidth/2, viewHeight/2);
     
     asteroidArray = [NSMutableArray array];
+    asteroidVelocityArray = [NSMutableArray array];
     starArray = [NSMutableArray array];
     powerUpArray = [NSMutableArray array];
     VisionPackArray = [NSMutableArray array];
@@ -182,6 +197,7 @@
     [_overFarthestBackground addObject:_overFarthestStars1];
     [_overFarthestBackground addObject:_overFarthestStars2];
     
+
     
 }
 
@@ -265,7 +281,7 @@
         
         powerUpRandom = rand() % 10;
         
-        if(powerUpRandom <= 2){ //Magnet 30%
+        if(powerUpRandom <= 3){ //Magnet 30%
             _currentMagnet = (Magnet*)[CCBReader load: @"Magnet"];
             _currentMagnet.position = [self randomPosition];
             
@@ -276,7 +292,7 @@
             _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
         }
         
-        if(powerUpRandom > 2 && powerUpRandom <= 7){ //Repulse Asteroid 50%
+        if(powerUpRandom > 3 && powerUpRandom <= 9){ //Repulse Asteroid 50%
             _currentRepulseAsteroid = (RepulseAsteroid*)[CCBReader load:@"RepulseAsteroid"];
             _currentRepulseAsteroid.position = [self randomPosition];
             
@@ -287,17 +303,17 @@
             _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
         }
         
-        
-        if(powerUpRandom > 7 && powerUpRandom <= 9 ){ //Invincibility 20%
-            _currentInvinciblePack = (InvinciblePack*)[CCBReader load: @"InvinciblePack"];
-            _currentInvinciblePack.position = [self randomPosition];
-            
-            [_physicsNode addChild:_currentInvinciblePack];
-            [powerUpArray addObject:_currentInvinciblePack];
-            
-            _powerUpCount++;
-            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
-        }
+//        
+//        if(powerUpRandom > 7 && powerUpRandom <= 9 ){ //Invincibility 20%
+//            _currentInvinciblePack = (InvinciblePack*)[CCBReader load: @"InvinciblePack"];
+//            _currentInvinciblePack.position = [self randomPosition];
+//            
+//            [_physicsNode addChild:_currentInvinciblePack];
+//            [powerUpArray addObject:_currentInvinciblePack];
+//            
+//            _powerUpCount++;
+//            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
+//        }
         
     }
 }
@@ -457,8 +473,7 @@
     }
     else{
         _currentInvinciblePackTime = 0;
-        //isInvincible = false;
-        isInvincible = true;
+        isInvincible = false;
         startInvincible = false;
     }
 }
@@ -503,6 +518,7 @@
     }
     
     [self scrollBackground];
+   // [self changeGalaxy];
     
     [_currentShip.physicsBody setVelocity:ccp(0,0)];
     _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
@@ -522,7 +538,7 @@
         [_physicsNode addChild:explosion];
         [_currentShip removeFromParent];
         shipBlownUp = true;
-
+        
         [self scheduleBlock:^(CCTimer *timer) {
             [self openEndScene];
         } delay:1.f];
@@ -612,29 +628,54 @@
 #pragma mark UI Methods
 
 - (void)openSettings {
-    self.paused = YES;
-    CCScene *settingsScene = [CCBReader loadAsScene:@"Settings"];
-    [[CCDirector sharedDirector] pushScene:settingsScene];
-//        self.paused = YES;
-//    [recalibrateButton runAction:recalibrateMoveIn];
-//    [mainMenuButton runAction:mainMenuMoveIn];
-//    [resumeButton runAction:resumeMoveIn];
+    if(settingsIsOpen == false){
+        settingsCover.visible = YES;
+        settingsIsOpen = true;
+        shipBlownUp = true; //to pause the game.
+        
+        [self stopAsteroids];
+        
+        
+        [recalibrateButton runAction:recalibrateMoveIn];
+        
+        [self scheduleBlock:^(CCTimer *timer) {
+            [mainMenuButton runAction:mainMenuMoveIn];
+        } delay:.2f];
+        
+        [self scheduleBlock:^(CCTimer *timer) {
+            [resumeButton runAction:resumeMoveIn];
+        } delay:.4f];
+    }
 }
 
 -(void)recalibrate{
-    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
-    CMAcceleration acceleration = accelerometerData.acceleration;
-    data.calibrationAccelerationX = acceleration.x;
-    data.calibrationAccelerationY = acceleration.y;
-    self.paused = false;
+    if(numTimesMainPressed == 0 && numTimesResumePressed == 0)
+        numTimesCalibratePressed++;
+    if(numTimesCalibratePressed == 1){
+        
+        CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+        CMAcceleration acceleration = accelerometerData.acceleration;
+        data.calibrationAccelerationX = acceleration.x;
+        data.calibrationAccelerationY = acceleration.y;
+        
+        [self putBackButtons];
+    }
 }
 
 -(void)openMainScene{
-    CCColor *black = [CCColor blackColor];
-    CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
-    CCTransition *transition = [CCTransition transitionFadeWithColor: black duration:0.5f];
-    [[CCDirector sharedDirector] presentScene:mainScene  withTransition:transition];
+    if(numTimesResumePressed == 0 && numTimesCalibratePressed == 0)
+        numTimesMainPressed++;
+    
+    if(numTimesMainPressed == 1){
+        [self save];
+        [self putBackButtons];
+        CCColor *black = [CCColor blackColor];
+        CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
+        CCTransition *transition = [CCTransition transitionFadeWithColor: black duration:0.5f];
+        [[CCDirector sharedDirector] presentScene:mainScene  withTransition:transition];
+    }
 }
+
 -(void)openEndScene{
     [self save];
     CCColor *black = [CCColor blackColor];
@@ -643,10 +684,56 @@
     [[CCDirector sharedDirector] presentScene:endScene  withTransition:transition];
 }
 
+-(void)putBackButtons{
+    [recalibrateButton runAction:recalibrateMoveOut];
+    
+    [self scheduleBlock:^(CCTimer *timer) {
+        [mainMenuButton runAction:mainMenuMoveOut];
+    } delay:.2f];
+    
+    [self scheduleBlock:^(CCTimer *timer) {
+        [resumeButton runAction:resumeMoveOut];
+    } delay:.4f];
+    
+    [self scheduleBlock:^(CCTimer *timer) {    //so people cant open settings right after the close
+        settingsIsOpen = false;
+        numTimesCalibratePressed = 0;
+        numTimesMainPressed = 0;
+        numTimesResumePressed = 0;
+        shipBlownUp = false;
+        settingsCover.visible = NO;
+        [self resumeAsteroids];
+    } delay:1.f];
+    
+    
+}
 -(void)resume{
-    self.paused = false;
+    if(numTimesCalibratePressed == 0 && numTimesMainPressed == 0)
+        numTimesResumePressed++;
+    if(numTimesResumePressed == 1){
+        [self putBackButtons];
+    }
 }
 
+-(void)stopAsteroids{
+    for(int i = 0; i< asteroidArray.count; i++){
+        _currentAsteroid = asteroidArray[i];
+        CGPoint point = [_currentAsteroid.physicsBody velocity];
+        NSValue *velocity = [NSValue valueWithCGPoint:point];
+        [asteroidVelocityArray addObject:velocity];
+        [_currentAsteroid.physicsBody setVelocity:ccp(0,0)];
+    }
+}
+
+-(void)resumeAsteroids{
+    for(int i = 0; i<asteroidArray.count;i++){
+        _currentAsteroid = asteroidArray[i];
+        NSValue *velocity = asteroidVelocityArray[i];
+        CGPoint point = [velocity CGPointValue];
+        [_currentAsteroid.physicsBody setVelocity:point];
+    }
+    [asteroidVelocityArray removeAllObjects];
+}
 #pragma mark Other Collision methods
 
 - (void) starRemoved:(CCNode *)Star {
@@ -654,16 +741,20 @@
     _starCount--;
     data.score++;
     
-    int randomNum = random() % 4;
+    int randomNum = random() % 5;
     
     if(randomNum == 0)
-    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
+        explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion"];
     else if(randomNum == 1)
-    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion2"];
+        explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion2"];
     else if(randomNum == 2)
-    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion3"];
+        explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion3"];
     else if(randomNum == 3)
-    explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion4"];
+        explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion4"];
+    else if(randomNum == 4)
+        explosion = (CCParticleSystem *)[CCBReader load:@"StarExplosion5"];
+    else
+        NSLog(@"else");
     
     explosion.autoRemoveOnFinish = TRUE;
     explosion.position = Star.position;
@@ -892,7 +983,7 @@
                 startFlyTutorial = false;
             }
         }
-}
+    }
     
     if(startStarTutorial == true){
         currentTutorialTimer++;
@@ -930,5 +1021,21 @@
     }
 }
 
+#pragma mark brackgounds
 
+-(void)changeGalaxy{
+    if(data.score == 15 && nextGalaxy == true)
+        numTimesIteratedGalaxy++;
+    
+    if(numTimesIteratedGalaxy == 1){
+        CCParticleSystem *blueGalaxy= (CCParticleSystem *)[CCBReader load:@"Galaxy2"];
+        blueGalaxy.position = redGalaxy.position;
+        [galaxyNode addChild:blueGalaxy];
+        blueGalaxy.autoRemoveOnFinish = true;
+
+        [redGalaxy removeFromParent];
+        
+        nextGalaxy = false;
+    }
+}
 @end

@@ -45,6 +45,11 @@
     _overFarthestBackground = [NSMutableArray array];
     [_overFarthestBackground addObject:_overFarthestStars1];
     [_overFarthestBackground addObject:_overFarthestStars2];
+    
+    OALSimpleAudio *audio = [OALSimpleAudio sharedInstance];
+    // play sound effect in a loop
+    [audio stopEverything];
+    [audio playEffect:@"Coldnoise - Awakening.mp3" loop:TRUE];
 }
 
 - (id)init {

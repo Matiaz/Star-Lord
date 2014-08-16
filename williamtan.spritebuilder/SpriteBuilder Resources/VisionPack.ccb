@@ -82,8 +82,8 @@
 									<integer>4</integer>
 									<key>value</key>
 									<array>
-										<real>0.44999998807907104</real>
-										<real>0.44999998807907104</real>
+										<real>0.4699999988079071</real>
+										<real>0.4699999988079071</real>
 									</array>
 								</dict>
 								<dict>
@@ -171,8 +171,8 @@
 						<string>ScaleLock</string>
 						<key>value</key>
 						<array>
-							<real>0.34999999403953552</real>
-							<real>0.34999999403953552</real>
+							<real>0.4699999988079071</real>
+							<real>0.4699999988079071</real>
 							<true/>
 							<integer>0</integer>
 						</array>
@@ -409,7 +409,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>2</real>
+			<real>1</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

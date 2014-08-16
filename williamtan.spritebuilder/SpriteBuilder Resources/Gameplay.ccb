@@ -10,13 +10,13 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>114</integer>
+	<integer>122</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
 	<integer>0</integer>
 	<key>currentSequenceId</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>docDimensionsType</key>
 	<integer>0</integer>
 	<key>fileType</key>
@@ -41,22 +41,80 @@
 		<array>
 			<dict>
 				<key>UUID</key>
-				<integer>73</integer>
-				<key>animatedProperties</key>
-				<dict>
-					<key>0</key>
-					<dict/>
-				</dict>
+				<integer>119</integer>
 				<key>baseClass</key>
-				<string>CCSprite</string>
+				<string>CCNode</string>
 				<key>children</key>
-				<array/>
+				<array>
+					<dict>
+						<key>UUID</key>
+						<integer>118</integer>
+						<key>baseClass</key>
+						<string>CCBFile</string>
+						<key>children</key>
+						<array/>
+						<key>customClass</key>
+						<string></string>
+						<key>displayName</key>
+						<string>CCBFile</string>
+						<key>memberVarAssignmentName</key>
+						<string>redGalaxy</string>
+						<key>memberVarAssignmentType</key>
+						<integer>1</integer>
+						<key>properties</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>name</string>
+								<key>type</key>
+								<string>StringSimple</string>
+								<key>value</key>
+								<string></string>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>position</string>
+								<key>type</key>
+								<string>Position</string>
+								<key>value</key>
+								<array>
+									<real>164.99996948242188</real>
+									<real>642</real>
+									<integer>0</integer>
+									<integer>0</integer>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>scale</string>
+								<key>type</key>
+								<string>ScaleLock</string>
+								<key>value</key>
+								<array>
+									<real>1</real>
+									<real>1</real>
+									<false/>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>ccbFile</string>
+								<key>type</key>
+								<string>CCBFile</string>
+								<key>value</key>
+								<string>Galaxy.ccb</string>
+							</dict>
+						</array>
+					</dict>
+				</array>
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>grace suggestion</string>
+				<string>CCNode</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>galaxyNode</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -76,9 +134,22 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>128.21780395507812</real>
-							<real>584.54083251953125</real>
+							<real>0.0</real>
+							<real>0.0</real>
 							<integer>0</integer>
+							<integer>0</integer>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>contentSize</string>
+						<key>type</key>
+						<string>Size</string>
+						<key>value</key>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
 							<integer>0</integer>
 							<integer>0</integer>
 						</array>
@@ -90,8 +161,8 @@
 						<string>Point</string>
 						<key>value</key>
 						<array>
-							<real>0.5</real>
-							<real>0.5</real>
+							<real>0.0</real>
+							<real>0.0</real>
 						</array>
 					</dict>
 					<dict>
@@ -101,34 +172,10 @@
 						<string>ScaleLock</string>
 						<key>value</key>
 						<array>
-							<real>6.2952485084533691</real>
-							<real>6.2952485084533691</real>
+							<real>1</real>
+							<real>1</real>
 							<false/>
 							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>spriteFrame</string>
-						<key>type</key>
-						<string>SpriteFrame</string>
-						<key>value</key>
-						<array>
-							<string></string>
-							<string>assets/grace suggestion.png</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>color</string>
-						<key>type</key>
-						<string>Color3</string>
-						<key>value</key>
-						<array>
-							<real>1</real>
-							<real>1</real>
-							<real>1</real>
-							<real>1</real>
 						</array>
 					</dict>
 				</array>
@@ -762,8 +809,6 @@
 								</array>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 					<dict>
 						<key>UUID</key>
@@ -2309,6 +2354,40 @@
 					<dict>
 						<key>UUID</key>
 						<integer>19</integer>
+						<key>animatedProperties</key>
+						<dict>
+							<key>1</key>
+							<dict>
+								<key>scale</key>
+								<dict>
+									<key>keyframes</key>
+									<array>
+										<dict>
+											<key>easing</key>
+											<dict>
+												<key>type</key>
+												<integer>1</integer>
+											</dict>
+											<key>name</key>
+											<string>scale</string>
+											<key>time</key>
+											<real>0.0</real>
+											<key>type</key>
+											<integer>4</integer>
+											<key>value</key>
+											<array>
+												<real>1</real>
+												<real>1</real>
+											</array>
+										</dict>
+									</array>
+									<key>name</key>
+									<string>scale</string>
+									<key>type</key>
+									<integer>4</integer>
+								</dict>
+							</dict>
+						</dict>
 						<key>baseClass</key>
 						<string>CCLabelTTF</string>
 						<key>children</key>
@@ -2357,6 +2436,11 @@
 								</array>
 							</dict>
 							<dict>
+								<key>baseValue</key>
+								<array>
+									<real>1</real>
+									<real>1</real>
+								</array>
 								<key>name</key>
 								<string>scale</string>
 								<key>type</key>
@@ -2365,7 +2449,7 @@
 								<array>
 									<real>1</real>
 									<real>1</real>
-									<false/>
+									<true/>
 									<integer>0</integer>
 								</array>
 							</dict>
@@ -2587,6 +2671,95 @@
 			</dict>
 			<dict>
 				<key>UUID</key>
+				<integer>116</integer>
+				<key>baseClass</key>
+				<string>CCSprite</string>
+				<key>children</key>
+				<array/>
+				<key>customClass</key>
+				<string></string>
+				<key>displayName</key>
+				<string>settingsCover</string>
+				<key>memberVarAssignmentName</key>
+				<string>settingsCover</string>
+				<key>memberVarAssignmentType</key>
+				<integer>1</integer>
+				<key>properties</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>name</string>
+						<key>type</key>
+						<string>StringSimple</string>
+						<key>value</key>
+						<string></string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>position</string>
+						<key>type</key>
+						<string>Position</string>
+						<key>value</key>
+						<array>
+							<real>279.80001831054688</real>
+							<real>166.00001525878906</real>
+							<integer>0</integer>
+							<integer>0</integer>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>anchorPoint</string>
+						<key>type</key>
+						<string>Point</string>
+						<key>value</key>
+						<array>
+							<real>0.5</real>
+							<real>0.5</real>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>scale</string>
+						<key>type</key>
+						<string>ScaleLock</string>
+						<key>value</key>
+						<array>
+							<real>1.8228601217269897</real>
+							<real>1.8228601217269897</real>
+							<false/>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>spriteFrame</string>
+						<key>type</key>
+						<string>SpriteFrame</string>
+						<key>value</key>
+						<array>
+							<string></string>
+							<string>assets/settingsCover.png</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>color</string>
+						<key>type</key>
+						<string>Color3</string>
+						<key>value</key>
+						<array>
+							<real>1</real>
+							<real>1</real>
+							<real>1</real>
+							<real>1</real>
+						</array>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>UUID</key>
 				<integer>113</integer>
 				<key>baseClass</key>
 				<string>CCNode</string>
@@ -2624,8 +2797,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>497.20001220703125</real>
-									<real>340.39996337890625</real>
+									<real>500</real>
+									<real>400</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -2649,9 +2822,9 @@
 								<string>ScaleLock</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
-									<false/>
+									<real>0.5</real>
+									<real>0.5</real>
+									<true/>
 									<integer>0</integer>
 								</array>
 							</dict>
@@ -2673,8 +2846,8 @@
 								<string>Size</string>
 								<key>value</key>
 								<array>
-									<real>40</real>
-									<real>40</real>
+									<real>500</real>
+									<real>150</real>
 									<integer>0</integer>
 									<integer>0</integer>
 								</array>
@@ -2707,7 +2880,7 @@
 								<string>String</string>
 								<key>value</key>
 								<array>
-									<string>Title</string>
+									<string></string>
 									<false/>
 								</array>
 							</dict>
@@ -2719,7 +2892,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/calibrateon.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -2730,7 +2903,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonHighlighted.png</string>
+									<string>assets/calibrateoff.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -2754,7 +2927,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/calibrateoff.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -2773,7 +2946,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/calibrateoff.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -2950,8 +3123,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>484</real>
-									<real>273.19998168945312</real>
+									<real>500</real>
+									<real>300</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -2975,9 +3148,9 @@
 								<string>ScaleLock</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
-									<false/>
+									<real>0.5</real>
+									<real>0.5</real>
+									<true/>
 									<integer>0</integer>
 								</array>
 							</dict>
@@ -2988,7 +3161,7 @@
 								<string>Block</string>
 								<key>value</key>
 								<array>
-									<string>openMainMenu</string>
+									<string>openMainScene</string>
 									<integer>1</integer>
 								</array>
 							</dict>
@@ -2999,8 +3172,8 @@
 								<string>Size</string>
 								<key>value</key>
 								<array>
-									<real>40</real>
-									<real>40</real>
+									<real>500</real>
+									<real>150</real>
 									<integer>0</integer>
 									<integer>0</integer>
 								</array>
@@ -3033,7 +3206,7 @@
 								<string>String</string>
 								<key>value</key>
 								<array>
-									<string>Title</string>
+									<string></string>
 									<false/>
 								</array>
 							</dict>
@@ -3045,7 +3218,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/mainon.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3056,7 +3229,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonHighlighted.png</string>
+									<string>assets/mainoff.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3080,7 +3253,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/mainoff.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3099,7 +3272,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/mainoff.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3276,8 +3449,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>484</real>
-									<real>169.99996948242188</real>
+									<real>500</real>
+									<real>200</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -3301,8 +3474,8 @@
 								<string>ScaleLock</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
+									<real>0.50015139579772949</real>
+									<real>0.50015139579772949</real>
 									<false/>
 									<integer>0</integer>
 								</array>
@@ -3325,8 +3498,8 @@
 								<string>Size</string>
 								<key>value</key>
 								<array>
-									<real>40</real>
-									<real>40</real>
+									<real>500</real>
+									<real>150</real>
 									<integer>0</integer>
 									<integer>0</integer>
 								</array>
@@ -3359,7 +3532,7 @@
 								<string>String</string>
 								<key>value</key>
 								<array>
-									<string>Title</string>
+									<string></string>
 									<false/>
 								</array>
 							</dict>
@@ -3371,7 +3544,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/resumeON.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3382,7 +3555,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonHighlighted.png</string>
+									<string>assets/resumeOFF.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3406,7 +3579,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/resumeOFF.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3425,7 +3598,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>ccbResources/ccbButtonNormal.png</string>
+									<string>assets/resumeOFF.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -3780,15 +3953,51 @@
 			<key>name</key>
 			<string>Default Timeline</string>
 			<key>offset</key>
-			<real>3.8876991271972656</real>
+			<real>0.0</real>
 			<key>position</key>
-			<real>4.5999999046325684</real>
+			<real>0.0</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
 			<real>128</real>
 			<key>sequenceId</key>
 			<integer>0</integer>
+			<key>soundChannel</key>
+			<dict>
+				<key>isExpanded</key>
+				<false/>
+				<key>keyframes</key>
+				<array/>
+				<key>type</key>
+				<integer>11</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>autoPlay</key>
+			<false/>
+			<key>callbackChannel</key>
+			<dict>
+				<key>keyframes</key>
+				<array/>
+				<key>type</key>
+				<integer>12</integer>
+			</dict>
+			<key>chainedSequenceId</key>
+			<integer>-1</integer>
+			<key>length</key>
+			<real>0.5</real>
+			<key>name</key>
+			<string>Untitled Timeline</string>
+			<key>offset</key>
+			<real>0.0</real>
+			<key>position</key>
+			<real>0.5</real>
+			<key>resolution</key>
+			<real>30</real>
+			<key>scale</key>
+			<real>128</real>
+			<key>sequenceId</key>
+			<integer>1</integer>
 			<key>soundChannel</key>
 			<dict>
 				<key>isExpanded</key>
