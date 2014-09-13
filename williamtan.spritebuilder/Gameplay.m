@@ -66,7 +66,7 @@
     BOOL startTapTutorial, startStarTutorial, startSunWarning, shipBlownUp, startFlyTutorial, startStallAsteroid, settingsIsOpen, nextGalaxy;
     int currentTutorialTimer, nextTutorialTimer, currentScore, sunWarningDuration, currentFlyTutorialDuration, stopFlyTutorialDuration;
     id sunMoveUp;
-    int currentStallAsteroidTime, stopStallAsteroidTime, numTimesResumePressed, numTimesCalibratePressed, numTimesMainPressed, numTimesIteratedGalaxy;
+    int currentStallAsteroidTime, stopStallAsteroidTime, numTimesResumePressed, numTimesCalibratePressed, numTimesMainPressed, numTimesIteratedGalaxy, lastAsteroidTime;
 }
 
 #pragma mark Game Methods
@@ -83,10 +83,10 @@
     _numVisionPackCollected = 1;
     
     _currentTime = 0;
-    _spawnStarTime = 60;
+    _spawnStarTime = 2;
     _spawnStarRate = _spawnStarTime; //because spawnStarTime will always be increasing, a initial rate needs to be declared.
     _starCount = 0;
-    MAXSTARS = 5;
+    MAXSTARS = 10;
     
     _asteroidCount = 0;
     
@@ -111,12 +111,12 @@
     _visionPackCount = 0;
     MAXVISIONPACK = 1;
     
-    earlyGame = 7;
-    midGame = 20;
-    lateGame = 30;
-    extremeGame = 40;
+    earlyGame = 10;
+    midGame = 25;
+    lateGame = 45;
+    extremeGame = 65;
     
-    isInvincible = false;
+    isInvincible = true;
     _currentInvinciblePackTime = 0;
     _stopInvinciblePackTime = 300;
     startInvincible = false;
@@ -146,6 +146,8 @@
     currentStallAsteroidTime = 1;  //used after a repulse to make sure no asteroids look like they are not being repulsed, start at one to fix shoot bug
     stopStallAsteroidTime = 300;
     startStallAsteroid = false;
+    
+    lastAsteroidTime = 0;
     
     numTimesIteratedGalaxy = 0;
     nextGalaxy = true;
@@ -197,6 +199,24 @@
     [_overFarthestBackground addObject:_overFarthestStars1];
     [_overFarthestBackground addObject:_overFarthestStars2];
     
+    _closestStars1.positionType = CCPositionTypePoints;
+    _closestStars2.positionType = CCPositionTypePoints;
+    _furthurStars1.positionType = CCPositionTypePoints;
+    _furthurStars2.positionType = CCPositionTypePoints;
+    _farthestStars2.positionType = CCPositionTypePoints;
+    _farthestStars1.positionType = CCPositionTypePoints;
+    _overFarthestStars1.positionType = CCPositionTypePoints;
+    _overFarthestStars2.positionType = CCPositionTypePoints;
+    
+    _closestStars1.position = ccp(0, 0);
+    _closestStars2.position = ccp(0, viewHeight);
+    _furthurStars1.position = ccp(0, 0);
+    _furthurStars2.position = ccp(0, viewHeight);
+    _farthestStars1.position = ccp(0, 0);
+    _farthestStars2.position = ccp(0, viewHeight);
+    _overFarthestStars1.position = ccp(0, 0);
+    _overFarthestStars2.position = ccp(0, viewHeight);
+    
 
     
 }
@@ -207,8 +227,9 @@
     while(done == false){
         loopCount++;
         numOverlapping = 0;
-        currentX = clampf(random() % 263+ 30, 30, viewWidth-28); // max x value is 293
-        currentY = clampf(random() % 460+ 25, 20, viewHeight-21); // max y value is 568
+        currentX = clampf(random() % (int)viewWidth, 30, viewWidth-28); // max x value is 293
+        currentY = clampf(random() % (int)viewHeight, 20, viewHeight-35); // max y value is 568
+
         
         for(int i = 0;i < starArray.count; i++){
             _currentStarInArray = starArray[i];
@@ -303,17 +324,17 @@
             _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
         }
         
-//        
-//        if(powerUpRandom > 7 && powerUpRandom <= 9 ){ //Invincibility 20%
-//            _currentInvinciblePack = (InvinciblePack*)[CCBReader load: @"InvinciblePack"];
-//            _currentInvinciblePack.position = [self randomPosition];
-//            
-//            [_physicsNode addChild:_currentInvinciblePack];
-//            [powerUpArray addObject:_currentInvinciblePack];
-//            
-//            _powerUpCount++;
-//            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
-//        }
+        //
+        //        if(powerUpRandom > 7 && powerUpRandom <= 9 ){ //Invincibility 20%
+        //            _currentInvinciblePack = (InvinciblePack*)[CCBReader load: @"InvinciblePack"];
+        //            _currentInvinciblePack.position = [self randomPosition];
+        //
+        //            [_physicsNode addChild:_currentInvinciblePack];
+        //            [powerUpArray addObject:_currentInvinciblePack];
+        //
+        //            _powerUpCount++;
+        //            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
+        //        }
         
     }
 }
@@ -336,59 +357,59 @@
 
 
 - (void) createAndRemoveAsteroids{
-//    earlyGame = 7;
-//    midGame = 27;
-//    lateGame = 37;
-//    extremeGame = 47;
+    //    earlyGame = 7;
+    //    midGame = 27;
+    //    lateGame = 37;
+    //    extremeGame = 47;
     
-    totalChance = (random() % 1000) + 1; //1-1000
+    totalChance = (random() % 1000) + 1;
     if(data.score == 0){
         MAXASTEROIDS = 0;
     }
     
-    else if(data.score <= earlyGame){ // First 10 seconds of the game.
-        shootAsteroidChance = 9; // Will shoot in 1/100 updates. Therefore it will shoot every 1.667 seconds.
+    else if(data.score <= earlyGame){
+        shootAsteroidChance = 8;
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 3;
-            asteroidShotForce = random() % 255 + 165;
+            asteroidShotForce = random() % 240 + 150;
             [self shootAsteroids];
         }
     }
     
     else if((data.score > earlyGame) && (data.score <= midGame)){
-        shootAsteroidChance = 11; // Will shoot in 1/50 updates. Therefore it will shoot every .883 seconds.
+        shootAsteroidChance = 10;
         if(totalChance <= shootAsteroidChance){
             MAXASTEROIDS = 4;
-            asteroidShotForce = random() % 275 + 190;
+            asteroidShotForce = random() % 250 + 160;
             [self shootAsteroids];
-            DECREASEVISIONFACTOR = 0.0095;
+            DECREASEVISIONFACTOR = 0.010;
         }
     }
     
     else if((data.score > midGame) && (data.score <= lateGame)){
-        shootAsteroidChance = 12; // Will shoot in 3/100 updates.
+        shootAsteroidChance = 11;
         if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 5;
-            asteroidShotForce = random() % 275 + 205;
+            MAXASTEROIDS = 4;
+            asteroidShotForce = random() % 260 + 175;
             [self shootAsteroids];
             DECREASEVISIONFACTOR = 0.011;
         }
     }
     else if(data.score > lateGame && (data.score <= extremeGame)){
-        shootAsteroidChance = 13; // Will shoot in 4/100 updates.
+        shootAsteroidChance = 13;
         if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 6;
-            asteroidShotForce = random() % 275 + 215;
+            MAXASTEROIDS = 5;
+            asteroidShotForce = random() % 260 + 185;
             [self shootAsteroids];
             DECREASEVISIONFACTOR = 0.012;
         }
     }
     
     else{
-        shootAsteroidChance = 15; // Will shoot in 4/100 updates.
+        shootAsteroidChance = 14; // Will shoot in 4/100 updates.
         if(totalChance <= shootAsteroidChance){
-            MAXASTEROIDS = 7;
-            asteroidShotForce = random() % 285 + 230;
+            MAXASTEROIDS = 6;
+            asteroidShotForce = random() % 260 + 195;
             [self shootAsteroids];
             DECREASEVISIONFACTOR = 0.013;
         }
@@ -399,7 +420,7 @@
 
 - (void) shootAsteroids{
     if(_asteroidCount < MAXASTEROIDS && (currentStallAsteroidTime == 1 || currentStallAsteroidTime >= stopStallAsteroidTime)){ //if currentStallAsteroiTime == 1, commence regular shooting, however, the second condtion is a mechnaism to stop asteroid from shooting after a repulse asteroid is collected.
-        currentX = random() % 301 +10; //orig is 320, but dont want them to spawn on 0
+        currentX = random() % (int)(viewWidth - 15) + 15; //orig is 320, but dont want them to spawn on 0
         currentY = viewHeight + 10;
         
         
@@ -423,11 +444,34 @@
         [asteroidArray addObject:_currentAsteroid];
         [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
         
+        //resets the asteroid timer;
+        lastAsteroidTime = 0;
+        
+        // to stall asteroids after the blue planet powerup.
         currentStallAsteroidTime = 1;
         startStallAsteroid = false;
+        
+        
     }
 }
 
+- (void) checkLastAsteroidShotTime{ 
+    if(data.score > earlyGame){
+        lastAsteroidTime++;
+        
+        if(lastAsteroidTime >= 350){
+            [self shootAsteroids];
+        }
+    }
+    
+    if(data.score <= earlyGame  && data.score > 0){
+        lastAsteroidTime++;
+        
+        if(lastAsteroidTime >= 50){
+            [self shootAsteroids];
+        }
+    }
+}
 - (void)decreaseVision{
     
     _vision.position = _currentShip.position;
@@ -514,6 +558,7 @@
         [self activateVision];
         [self activateInvicibility];
         [self createAndRemoveAsteroids];
+        //[self checkLastAsteroidShotTime];
         [self activateVisionPackParticle];
         [self checkTutorials];
         if(startStallAsteroid == true)
@@ -526,9 +571,8 @@
     [_currentShip.physicsBody setVelocity:ccp(0,0)];
     _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
     _visionPackLabel.string = [NSString stringWithFormat:@"%d",_numVisionPackCollected];
-    // NSLog(@"current time %li", _currentMagnetTime);
-    //NSLog(@"%i, %li", _asteroidCount, _currentTime);
-    //NSLog(@"%i, %i", _currentMagnetTime, _stopMagnetTime);
+    NSLog(@"%i, %i", lastAsteroidTime, _asteroidCount);
+    
 }
 
 #pragma mark Collision Methods
@@ -784,6 +828,7 @@
     }
     startStallAsteroid = true;
     _powerUpCount--;
+    data.score++;
 }
 
 -(void) visionPackRemoved:(CCNode *)VisionPack{
@@ -791,6 +836,7 @@
     [VisionPackArray removeObject:VisionPack];
     _numVisionPackCollected++;
     _visionPackCount--;
+    data.score = data.score + 2;
     
     startVisionParticle = true;
     CCParticleSystem *VisionParticleOnHit = (CCParticleSystem *)[CCBReader load:@"VisionParticleOnHit"];
@@ -821,6 +867,7 @@
     [Magnet removeFromParent];
     [powerUpArray removeObject:Magnet];
     _powerUpCount--;
+    data.score++;
     
     startMagnet = true;
     _currentMagnetTime = 0;
@@ -1034,7 +1081,7 @@
         CCParticleSystem *blueGalaxy= (CCParticleSystem *)[CCBReader load:@"Galaxy2"];
         blueGalaxy.position = redGalaxy.position;
         [galaxyNode addChild:blueGalaxy];
-
+        
         [redGalaxy removeFromParentAndCleanup:true];
         nextGalaxy = false;
     }

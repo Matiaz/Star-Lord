@@ -16,7 +16,7 @@
     CCLabelTTF *_highScoreLabel;
     GameData *data;
     float viewHeight, viewWidth;
-    CCNode *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
+    CCSprite *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
     NSMutableArray *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground;
 }
  
@@ -43,6 +43,24 @@
     [_overFarthestBackground addObject:_overFarthestStars1];
     [_overFarthestBackground addObject:_overFarthestStars2];
     
+    _closestStars1.positionType = CCPositionTypePoints;
+    _closestStars2.positionType = CCPositionTypePoints;
+    _furthurStars1.positionType = CCPositionTypePoints;
+    _furthurStars2.positionType = CCPositionTypePoints;
+    _farthestStars2.positionType = CCPositionTypePoints;
+    _farthestStars1.positionType = CCPositionTypePoints;
+    _overFarthestStars1.positionType = CCPositionTypePoints;
+    _overFarthestStars2.positionType = CCPositionTypePoints;
+    
+    _closestStars1.position = ccp(0, 0);
+    _closestStars2.position = ccp(0, viewHeight);
+    _furthurStars1.position = ccp(0, 0);
+    _furthurStars2.position = ccp(0, viewHeight);
+    _farthestStars1.position = ccp(0, 0);
+    _farthestStars2.position = ccp(0, viewHeight);
+    _overFarthestStars1.position = ccp(0, 0);
+    _overFarthestStars2.position = ccp(0, viewHeight);
+    
      _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
     _highScoreLabel.string = [NSString stringWithFormat:@"%ld", (long)[[MGWU objectForKey:@"highScore"] integerValue]];
 }
@@ -66,7 +84,7 @@
 
 
 -(void)scrollBackground{
-    for(CCNode *background in _closestBackground){
+    for(CCSprite *background in _closestBackground){
         background.position = ccp(background.position.x, background.position.y - 8);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
@@ -74,7 +92,7 @@
         }
     }
     
-    for(CCNode *background in _furthurBackground){
+    for(CCSprite *background in _furthurBackground){
         background.position = ccp(background.position.x, background.position.y - 6);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
@@ -82,7 +100,7 @@
         }
     }
     
-    for(CCNode *background in _farthestBackground){
+    for(CCSprite *background in _farthestBackground){
         background.position = ccp(background.position.x, background.position.y - 4);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
@@ -90,7 +108,7 @@
         }
     }
     
-    for(CCNode *background in _overFarthestBackground){
+    for(CCSprite *background in _overFarthestBackground){
         background.position = ccp(background.position.x, background.position.y - 2);
         
         if(background.position.y <= (-1 * background.contentSize.height)){

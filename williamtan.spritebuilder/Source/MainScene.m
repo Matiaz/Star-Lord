@@ -21,9 +21,10 @@
     GameData* data;
     CCSprite *logo;
     float viewHeight, viewWidth;
-    CCNode *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
+    CCSprite *_closestStars1, *_closestStars2, *_furthurStars1, *_furthurStars2, *_farthestStars1, *_farthestStars2, *_overFarthestStars1, *_overFarthestStars2;
     NSMutableArray *_closestBackground, *_furthurBackground, *_farthestBackground, *_overFarthestBackground;
-    
+    CCButton *play, *calibrate, *music;
+    bool calibrated;
 }
 
 -(void) didLoadFromCCB{
@@ -46,12 +47,56 @@
     [_overFarthestBackground addObject:_overFarthestStars1];
     [_overFarthestBackground addObject:_overFarthestStars2];
     
+    _closestStars1.positionType = CCPositionTypePoints;
+    _closestStars2.positionType = CCPositionTypePoints;
+    _furthurStars1.positionType = CCPositionTypePoints;
+    _furthurStars2.positionType = CCPositionTypePoints;
+    _farthestStars2.positionType = CCPositionTypePoints;
+    _farthestStars1.positionType = CCPositionTypePoints;
+    _overFarthestStars1.positionType = CCPositionTypePoints;
+    _overFarthestStars2.positionType = CCPositionTypePoints;
+    
+    _closestStars1.position = ccp(0, 0);
+    _closestStars2.position = ccp(0, viewHeight);
+    _furthurStars1.position = ccp(0, 0);
+    _furthurStars2.position = ccp(0, viewHeight);
+    _farthestStars1.position = ccp(0, 0);
+    _farthestStars2.position = ccp(0, viewHeight);
+    _overFarthestStars1.position = ccp(0, 0);
+    _overFarthestStars2.position = ccp(0, viewHeight);
+    
     OALSimpleAudio *audio = [OALSimpleAudio sharedInstance];
     // play sound effect in a loop
     [audio stopEverything];
-    [audio playEffect:@"Coldnoise - Awakening.mp3" loop:TRUE];
+    [audio preloadBg:@"Coldnoise Awakening.mp3"];
+    [audio playBg:@"Coldnoise Awakening.mp3" loop:TRUE];
+    
+    calibrated = false;
 }
 
+-(void)calibrated{
+    calibrated = true;
+    [self.animationManager runAnimationsForSequenceNamed:@"calibrateOut"];
+    [calibrate setUserInteractionEnabled:false];
+    [self scheduleBlock:^(CCTimer *timer) {
+        [calibrate removeFromParent];
+        [music removeFromParent];
+        [self. animationManager runAnimationsForSequenceNamed:@"playIn"];
+    } delay:0.6f];
+    
+}
+
+- (void)play {
+    CCColor *black = [CCColor blackColor];
+    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
+    CCTransition *transition = [CCTransition transitionFadeWithColor:black duration:0.5f];
+    [[CCDirector sharedDirector] presentScene:gameplayScene withTransition:transition];
+    
+}
+
+-(void)openMusic{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://soundcloud.com/coldnoises"]];
+}
 - (id)init {
     self = [super init];
     
@@ -76,43 +121,21 @@
     
     return self;
 }
-- (void)play {
-//    bool done = true;
-//    id move = [CCActionMoveTo actionWithDuration:1 position:ccp(viewWidth/2, viewHeight + 200)];
-//    [logo runAction:move];
-//    while(done == true){
-//        if([move isDone] == NO){
-//            NSLog(@"no");
-//            [logo stopAction:move];
-//            [logo runAction:move];
-//        }
-//        if([move isDone] == YES) {
-//            CCColor *myColor = [CCColor blackColor];
-//            CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
-//            CCTransition *transition = [CCTransition transitionFadeWithColor: myColor duration:0.5f];
-//            [[CCDirector sharedDirector] presentScene:gameplayScene withTransition:transition];
-//            done = false;
-//        }
-//    }
-    CCColor *black = [CCColor blackColor];
-    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
-    CCTransition *transition = [CCTransition transitionFadeWithColor:black duration:0.5f];
-    [[CCDirector sharedDirector] presentScene:gameplayScene withTransition:transition];
 
-}
 -(void)update:(CCTime)delta{
-    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
-    CMAcceleration acceleration = accelerometerData.acceleration;
+    if(calibrated == false){
+        CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+        CMAcceleration acceleration = accelerometerData.acceleration;
+        
+        data.calibrationAccelerationX  = acceleration.x; //taking the calibration values
+        data.calibrationAccelerationY = acceleration.y;
+    }
     
-    data.calibrationAccelerationX  = acceleration.x; //taking the calibration values
-    data.calibrationAccelerationY = acceleration.y;
-    
-    NSLog(@"Singleton accel X: %f, accel y: %f", data.calibrationAccelerationX, data.calibrationAccelerationY);
     [self scrollBackground];
 }
 
 -(void)scrollBackground{
-    for(CCNode *background in _closestBackground){
+    for(CCSprite *background in _closestBackground){
         background.position = ccp(background.position.x, background.position.y - 8);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
@@ -120,7 +143,7 @@
         }
     }
     
-    for(CCNode *background in _furthurBackground){
+    for(CCSprite *background in _furthurBackground){
         background.position = ccp(background.position.x, background.position.y - 6);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
@@ -128,7 +151,7 @@
         }
     }
     
-    for(CCNode *background in _farthestBackground){
+    for(CCSprite *background in _farthestBackground){
         background.position = ccp(background.position.x, background.position.y - 4);
         
         if(background.position.y <= (-1 * background.contentSize.height)){
@@ -136,7 +159,7 @@
         }
     }
     
-    for(CCNode *background in _overFarthestBackground){
+    for(CCSprite *background in _overFarthestBackground){
         background.position = ccp(background.position.x, background.position.y - 2);
         
         if(background.position.y <= (-1 * background.contentSize.height)){

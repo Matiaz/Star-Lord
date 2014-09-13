@@ -9,7 +9,11 @@
 /* Begin PBXBuildFile section */
 		8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392007918EE8E3300B6C429 /* GLKit.framework */; };
 		88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 88011D62196DBD3100FE3CB8 /* Gameplay.m */; };
+		880C635019BEA77400E23843 /* Coldnoise Awakening.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 880C634F19BEA77400E23843 /* Coldnoise Awakening.mp3 */; };
+		880C635519BFD14100E23843 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 880C635419BFD14100E23843 /* Default-Landscape~ipad.png */; };
+		880C635719BFD15300E23843 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 880C635619BFD15300E23843 /* iPad-old@2x.png */; };
 		881521D31981785800AC2E9E /* VisionPack.m in Sources */ = {isa = PBXBuildFile; fileRef = 881521D21981785800AC2E9E /* VisionPack.m */; };
+		882F328619BFD853007EF4A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 882F328519BFD853007EF4A5 /* Images.xcassets */; };
 		883C7D871975A75600B626B4 /* EndScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 883C7D861975A75600B626B4 /* EndScene.m */; };
 		884C14741980436B0078FDAE /* RepulseAsteroid.m in Sources */ = {isa = PBXBuildFile; fileRef = 884C14731980436B0078FDAE /* RepulseAsteroid.m */; };
 		884E6628199AEF98002DE5BC /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 884E6627199AEF98002DE5BC /* GameData.m */; };
@@ -101,13 +105,9 @@
 		88A205D7197205530015925F /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A205D6197205530015925F /* Star.m */; };
 		88A33E20199968E100B82D13 /* InvinciblePack.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A33E1F199968E100B82D13 /* InvinciblePack.m */; };
 		88A6E97D199DC38700D92144 /* Published-iOS in Resources */ = {isa = PBXBuildFile; fileRef = 88A6E97C199DC38700D92144 /* Published-iOS */; };
-		88A6E982199DDBE700D92144 /* Coldnoise - Awakening.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 88A6E981199DDBE600D92144 /* Coldnoise - Awakening.mp3 */; };
 		88A6E989199EA34D00D92144 /* InvincibleShip.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A6E988199EA34D00D92144 /* InvincibleShip.m */; };
-		88A6E98B199EAECE00D92144 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88A6E98A199EAECE00D92144 /* iTunesArtwork@2x.png */; };
-		88A6E98F199EB0E500D92144 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88A6E98E199EB0E500D92144 /* Images.xcassets */; };
 		88FCDD5319757C8D00D3D5EA /* Asteroid1.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FCDD5219757C8D00D3D5EA /* Asteroid1.m */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
-		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
 		B71F5913188484E7003F4D28 /* iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5909188484E7003F4D28 /* iPad.png */; };
 		B71F5914188484E7003F4D28 /* iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F590A188484E7003F4D28 /* iPad@2x.png */; };
 		B71F5915188484E7003F4D28 /* iPhone-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F590B188484E7003F4D28 /* iPhone-old.png */; };
@@ -118,7 +118,6 @@
 		B71F591A188484E7003F4D28 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5910188484E7003F4D28 /* Settings@2x.png */; };
 		B737893F1807617C0076A88C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B737893E1807617C0076A88C /* AppDelegate.m */; };
 		B7378975180762440076A88C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896B180762440076A88C /* Default-568h@2x.png */; };
-		B7378976180762440076A88C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896C180762440076A88C /* Default-Landscape~ipad.png */; };
 		B7378977180762440076A88C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		B7378978180762440076A88C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896E180762440076A88C /* Default@2x.png */; };
 		B73789871807631A0076A88C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B73789851807631A0076A88C /* main.m */; };
@@ -156,8 +155,12 @@
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		88011D61196DBD3100FE3CB8 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
 		88011D62196DBD3100FE3CB8 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gameplay.m; sourceTree = "<group>"; };
+		880C634F19BEA77400E23843 /* Coldnoise Awakening.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Coldnoise Awakening.mp3"; sourceTree = "<group>"; };
+		880C635419BFD14100E23843 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		880C635619BFD15300E23843 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad-old@2x.png"; sourceTree = "<group>"; };
 		881521D11981785800AC2E9E /* VisionPack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisionPack.h; sourceTree = "<group>"; };
 		881521D21981785800AC2E9E /* VisionPack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisionPack.m; sourceTree = "<group>"; };
+		882F328519BFD853007EF4A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = williamtan/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		883C7D851975A75600B626B4 /* EndScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
 		883C7D861975A75600B626B4 /* EndScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndScene.m; sourceTree = "<group>"; };
 		884C14721980436B0078FDAE /* RepulseAsteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepulseAsteroid.h; path = Source/RepulseAsteroid.h; sourceTree = "<group>"; };
@@ -257,15 +260,11 @@
 		88A33E1E199968E100B82D13 /* InvinciblePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InvinciblePack.h; path = Source/InvinciblePack.h; sourceTree = "<group>"; };
 		88A33E1F199968E100B82D13 /* InvinciblePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InvinciblePack.m; path = Source/InvinciblePack.m; sourceTree = "<group>"; };
 		88A6E97C199DC38700D92144 /* Published-iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Published-iOS"; sourceTree = "<group>"; };
-		88A6E981199DDBE600D92144 /* Coldnoise - Awakening.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Coldnoise - Awakening.mp3"; sourceTree = "<group>"; };
 		88A6E987199EA34D00D92144 /* InvincibleShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InvincibleShip.h; path = Source/InvincibleShip.h; sourceTree = "<group>"; };
 		88A6E988199EA34D00D92144 /* InvincibleShip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InvincibleShip.m; path = Source/InvincibleShip.m; sourceTree = "<group>"; };
-		88A6E98A199EAECE00D92144 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
-		88A6E98E199EB0E500D92144 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		88FCDD5119757C8D00D3D5EA /* Asteroid1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asteroid1.h; path = Source/Asteroid1.h; sourceTree = "<group>"; };
 		88FCDD5219757C8D00D3D5EA /* Asteroid1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asteroid1.m; path = Source/Asteroid1.m; sourceTree = "<group>"; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
-		B71F5908188484E7003F4D28 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old@2x.png"; path = "Icons/iPad-old@2x.png"; sourceTree = "<group>"; };
 		B71F5909188484E7003F4D28 /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPad.png; path = Icons/iPad.png; sourceTree = "<group>"; };
 		B71F590A188484E7003F4D28 /* iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad@2x.png"; path = "Icons/iPad@2x.png"; sourceTree = "<group>"; };
 		B71F590B188484E7003F4D28 /* iPhone-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhone-old.png"; path = "Icons/iPhone-old.png"; sourceTree = "<group>"; };
@@ -278,7 +277,6 @@
 		B737893E1807617C0076A88C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		B7378940180761A80076A88C /* cocos2d-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "cocos2d-ios.xcodeproj"; path = "Source/libs/cocos2d-iphone/cocos2d-ios.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		B737896B180762440076A88C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Source/Resources/Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
-		B737896C180762440076A88C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "Source/Resources/Default-Landscape~ipad.png"; sourceTree = SOURCE_ROOT; };
 		B737896D180762440076A88C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Source/Resources/Default.png; sourceTree = SOURCE_ROOT; };
 		B737896E180762440076A88C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Source/Resources/Default@2x.png"; sourceTree = SOURCE_ROOT; };
 		B73789851807631A0076A88C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = SOURCE_ROOT; };
@@ -473,9 +471,9 @@
 			isa = PBXGroup;
 			children = (
 				B71F5907188484E7003F4D28 /* iPad-old.png */,
-				B71F5908188484E7003F4D28 /* iPad-old@2x.png */,
-				88A6E98A199EAECE00D92144 /* iTunesArtwork@2x.png */,
+				880C635419BFD14100E23843 /* Default-Landscape~ipad.png */,
 				B71F5909188484E7003F4D28 /* iPad.png */,
+				880C635619BFD15300E23843 /* iPad-old@2x.png */,
 				B71F590A188484E7003F4D28 /* iPad@2x.png */,
 				B71F590B188484E7003F4D28 /* iPhone-old.png */,
 				B71F590C188484E7003F4D28 /* iPhone-old@2x.png */,
@@ -484,7 +482,6 @@
 				B71F590F188484E7003F4D28 /* Settings.png */,
 				B71F5910188484E7003F4D28 /* Settings@2x.png */,
 				B737896B180762440076A88C /* Default-568h@2x.png */,
-				B737896C180762440076A88C /* Default-Landscape~ipad.png */,
 				B737896D180762440076A88C /* Default.png */,
 				B737896E180762440076A88C /* Default@2x.png */,
 			);
@@ -545,8 +542,8 @@
 		B77F1B4617B978D7009739AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				88A6E98E199EB0E500D92144 /* Images.xcassets */,
-				88A6E981199DDBE600D92144 /* Coldnoise - Awakening.mp3 */,
+				882F328519BFD853007EF4A5 /* Images.xcassets */,
+				880C634F19BEA77400E23843 /* Coldnoise Awakening.mp3 */,
 				88A6E97C199DC38700D92144 /* Published-iOS */,
 				B73789911807667A0076A88C /* Icons */,
 			);
@@ -595,7 +592,7 @@
 				ORGANIZATIONNAME = Apportable;
 				TargetAttributes = {
 					B77F1B2D17B978D7009739AE = {
-						DevelopmentTeam = SBVP8ED765;
+						DevelopmentTeam = 44222BN92T;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 0;
@@ -679,26 +676,23 @@
 				88996E7819915CB1005FF8D5 /* fb_connect.png in Resources */,
 				88996E8A19915CB1005FF8D5 /* mgwu-m@2x.png in Resources */,
 				88996E8C19915CB1005FF8D5 /* MGWUAboutFooter-Landscape@2x~ipad.png in Resources */,
-				B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */,
 				88996E9C19915CB1005FF8D5 /* MGWUBackgroundDark-Landscape@2x~ipad.png in Resources */,
 				88996E7E19915CB1005FF8D5 /* FBNoThanksButton@2x.png in Resources */,
 				88996EA819915CB1005FF8D5 /* MGWUFacebookLoginPortrait.nib in Resources */,
 				88996E8F19915CB1005FF8D5 /* MGWUAboutFooter-Landscape~iphone.png in Resources */,
-				88A6E982199DDBE700D92144 /* Coldnoise - Awakening.mp3 in Resources */,
 				88996E9319915CB1005FF8D5 /* MGWUAboutFooter-Portrait~iphone.png in Resources */,
 				88996E9219915CB1005FF8D5 /* MGWUAboutFooter-Portrait~ipad.png in Resources */,
 				88996E9E19915CB1005FF8D5 /* MGWUBackgroundDark-Landscape~ipad.png in Resources */,
 				88996EB519915CB1005FF8D5 /* send-button-active.png in Resources */,
+				880C635719BFD15300E23843 /* iPad-old@2x.png in Resources */,
 				B71F5916188484E7003F4D28 /* iPhone-old@2x.png in Resources */,
 				88996EA919915CB1005FF8D5 /* MGWUFacebookLoginPortraitDark.nib in Resources */,
 				88996EB319915CB1005FF8D5 /* operator.connecting.png in Resources */,
 				88996E8619915CB1005FF8D5 /* hipmobsend_field@2x.png in Resources */,
-				88A6E98B199EAECE00D92144 /* iTunesArtwork@2x.png in Resources */,
 				88996E7C19915CB1005FF8D5 /* FBLoginButtonPressed@2x.png in Resources */,
 				88996E7B19915CB1005FF8D5 /* FBLoginButtonPressed.png in Resources */,
 				B71F591A188484E7003F4D28 /* Settings@2x.png in Resources */,
 				88996E7A19915CB1005FF8D5 /* FBLoginButton@2x.png in Resources */,
-				B7378976180762440076A88C /* Default-Landscape~ipad.png in Resources */,
 				88996E8919915CB1005FF8D5 /* mgwu-m.png in Resources */,
 				88996E7519915CB1005FF8D5 /* bluechatbubble.png in Resources */,
 				88996EAF19915CB1005FF8D5 /* mgwuPlaceholderIcon@2x.png in Resources */,
@@ -721,13 +715,15 @@
 				88996EA519915CB1005FF8D5 /* MGWUClose@2x.png in Resources */,
 				88996E8819915CB1005FF8D5 /* mgwu-gk-notification@2x.png in Resources */,
 				88996E8719915CB1005FF8D5 /* mgwu-gk-notification.png in Resources */,
+				880C635019BEA77400E23843 /* Coldnoise Awakening.mp3 in Resources */,
 				88996EB819915CB1005FF8D5 /* send-field-landscape.png in Resources */,
 				B71F5918188484E7003F4D28 /* iPhone@2x.png in Resources */,
 				B7378977180762440076A88C /* Default.png in Resources */,
 				88996E9D19915CB1005FF8D5 /* MGWUBackgroundDark-Landscape@2x~iphone.png in Resources */,
 				88A6E97D199DC38700D92144 /* Published-iOS in Resources */,
-				88A6E98F199EB0E500D92144 /* Images.xcassets in Resources */,
 				88996EA119915CB1005FF8D5 /* MGWUBackgroundDark-Portrait@2x~iphone.png in Resources */,
+				882F328619BFD853007EF4A5 /* Images.xcassets in Resources */,
+				880C635519BFD14100E23843 /* Default-Landscape~ipad.png in Resources */,
 				B71F5911188484E7003F4D28 /* iPad-old.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -848,7 +844,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -878,7 +876,9 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = williamtan;
-				PROVISIONING_PROFILE = "6E1998EB-320D-4966-B4C9-853B315A4F94";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -887,7 +887,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -908,6 +910,7 @@
 				);
 				INFOPLIST_FILE = Source/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lsqlite3",
@@ -915,8 +918,10 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = williamtan;
-				PROVISIONING_PROFILE = "6E1998EB-320D-4966-B4C9-853B315A4F94";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
