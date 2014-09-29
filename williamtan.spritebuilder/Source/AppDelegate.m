@@ -34,7 +34,6 @@
 {
     [MGWU dark];
     [MGWU loadMGWU:@"momom123"];
-    [MGWU setReminderMessage:@"Captain, are you ready for an adventure?"];
     [MGWU preFacebook]; //Temporarily disables Facebook until you integrate it later
     
     

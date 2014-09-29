@@ -77,9 +77,10 @@
 }
 
 - (void)replay{
-    NSLog(@"play activated");
+    CCColor *black = [CCColor blackColor];
     CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
-    [[CCDirector sharedDirector] replaceScene:gameplayScene];
+    CCTransition *transition = [CCTransition transitionFadeWithColor:black duration:0.5f];
+    [[CCDirector sharedDirector] presentScene:gameplayScene withTransition:transition];
 }
 
 

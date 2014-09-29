@@ -83,10 +83,10 @@
     _numVisionPackCollected = 1;
     
     _currentTime = 0;
-    _spawnStarTime = 2;
+    _spawnStarTime = 60;
     _spawnStarRate = _spawnStarTime; //because spawnStarTime will always be increasing, a initial rate needs to be declared.
     _starCount = 0;
-    MAXSTARS = 10;
+    MAXSTARS = 5;
     
     _asteroidCount = 0;
     
@@ -227,8 +227,8 @@
     while(done == false){
         loopCount++;
         numOverlapping = 0;
-        currentX = clampf(random() % (int)viewWidth, 30, viewWidth-28); // max x value is 293
-        currentY = clampf(random() % (int)viewHeight, 20, viewHeight-35); // max y value is 568
+        currentX = clampf(random() % (int)viewWidth, 35, viewWidth-28); // max x value is 293
+        currentY = clampf(random() % (int)viewHeight, 30, viewHeight-45); // max y value is 568
 
         
         for(int i = 0;i < starArray.count; i++){
@@ -442,8 +442,10 @@
         _asteroidCount++;
         [_physicsNode addChild:_currentAsteroid];
         [asteroidArray addObject:_currentAsteroid];
+        
         [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
         
+  
         //resets the asteroid timer;
         lastAsteroidTime = 0;
         

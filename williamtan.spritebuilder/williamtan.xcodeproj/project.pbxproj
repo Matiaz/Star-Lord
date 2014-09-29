@@ -442,8 +442,8 @@
 				884C14721980436B0078FDAE /* RepulseAsteroid.h */,
 				884C14731980436B0078FDAE /* RepulseAsteroid.m */,
 				884E6626199AEF98002DE5BC /* GameData.h */,
-				884E6627199AEF98002DE5BC /* GameData.m */,
 				88011D61196DBD3100FE3CB8 /* Gameplay.h */,
+				884E6627199AEF98002DE5BC /* GameData.m */,
 				88011D62196DBD3100FE3CB8 /* Gameplay.m */,
 				88A33E1E199968E100B82D13 /* InvinciblePack.h */,
 				88A33E1F199968E100B82D13 /* InvinciblePack.m */,
@@ -867,7 +867,7 @@
 					"\"Source/libs/cocos2d-iphone/external/ObjectAL\"/**",
 				);
 				INFOPLIST_FILE = Source/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lz",
@@ -878,7 +878,7 @@
 				PRODUCT_NAME = williamtan;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = "armv7s arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -909,7 +909,7 @@
 					"\"Source/libs/cocos2d-iphone/external/ObjectAL\"/**",
 				);
 				INFOPLIST_FILE = Source/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lz",
@@ -921,7 +921,7 @@
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = "armv7s arm64 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
