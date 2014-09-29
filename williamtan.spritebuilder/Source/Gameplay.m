@@ -216,9 +216,6 @@
     _farthestStars2.position = ccp(0, viewHeight);
     _overFarthestStars1.position = ccp(0, 0);
     _overFarthestStars2.position = ccp(0, viewHeight);
-    
-
-    
 }
 
 -(CGPoint) randomPosition {
@@ -323,19 +320,6 @@
             _powerUpCount++;
             _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
         }
-        
-        //
-        //        if(powerUpRandom > 7 && powerUpRandom <= 9 ){ //Invincibility 20%
-        //            _currentInvinciblePack = (InvinciblePack*)[CCBReader load: @"InvinciblePack"];
-        //            _currentInvinciblePack.position = [self randomPosition];
-        //
-        //            [_physicsNode addChild:_currentInvinciblePack];
-        //            [powerUpArray addObject:_currentInvinciblePack];
-        //
-        //            _powerUpCount++;
-        //            _spawnPowerUpTime = _spawnPowerUpTime + _spawnPowerUpRate;
-        //        }
-        
     }
 }
 
@@ -355,13 +339,7 @@
 
 
 
-
 - (void) createAndRemoveAsteroids{
-    //    earlyGame = 7;
-    //    midGame = 27;
-    //    lateGame = 37;
-    //    extremeGame = 47;
-    
     totalChance = (random() % 1000) + 1;
     if(data.score == 0){
         MAXASTEROIDS = 0;
@@ -444,7 +422,6 @@
         [asteroidArray addObject:_currentAsteroid];
         
         [_currentAsteroid.physicsBody applyImpulse:ccpMult(ccpNormalize(ccp(0,-1)), asteroidShotForce)];
-        
   
         //resets the asteroid timer;
         lastAsteroidTime = 0;
@@ -457,23 +434,6 @@
     }
 }
 
-- (void) checkLastAsteroidShotTime{ 
-    if(data.score > earlyGame){
-        lastAsteroidTime++;
-        
-        if(lastAsteroidTime >= 350){
-            [self shootAsteroids];
-        }
-    }
-    
-    if(data.score <= earlyGame  && data.score > 0){
-        lastAsteroidTime++;
-        
-        if(lastAsteroidTime >= 50){
-            [self shootAsteroids];
-        }
-    }
-}
 - (void)decreaseVision{
     
     _vision.position = _currentShip.position;
@@ -560,7 +520,6 @@
         [self activateVision];
         [self activateInvicibility];
         [self createAndRemoveAsteroids];
-        //[self checkLastAsteroidShotTime];
         [self activateVisionPackParticle];
         [self checkTutorials];
         if(startStallAsteroid == true)
@@ -568,7 +527,6 @@
     }
     
     [self scrollBackground];
-    //[self changeGalaxy];
     
     [_currentShip.physicsBody setVelocity:ccp(0,0)];
     _scoreLabel.string = [NSString stringWithFormat:@"%i",data.score];
@@ -1074,18 +1032,4 @@
 }
 
 #pragma mark brackgounds
-
--(void)changeGalaxy{
-    if(data.score == 15 && nextGalaxy == true)
-        numTimesIteratedGalaxy++;
-    
-    if(numTimesIteratedGalaxy == 1){
-        CCParticleSystem *blueGalaxy= (CCParticleSystem *)[CCBReader load:@"Galaxy2"];
-        blueGalaxy.position = redGalaxy.position;
-        [galaxyNode addChild:blueGalaxy];
-        
-        [redGalaxy removeFromParentAndCleanup:true];
-        nextGalaxy = false;
-    }
-}
 @end

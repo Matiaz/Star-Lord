@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392007918EE8E3300B6C429 /* GLKit.framework */; };
-		88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 88011D62196DBD3100FE3CB8 /* Gameplay.m */; };
+		8801108419D90CCE007EB207 /* VisionPack.m in Sources */ = {isa = PBXBuildFile; fileRef = 8801108319D90CCE007EB207 /* VisionPack.m */; };
+		8801108719D90CDF007EB207 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8801108619D90CDF007EB207 /* Gameplay.m */; };
+		8801108919D90CE7007EB207 /* EndScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8801108819D90CE7007EB207 /* EndScene.m */; };
 		880C635019BEA77400E23843 /* Coldnoise Awakening.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 880C634F19BEA77400E23843 /* Coldnoise Awakening.mp3 */; };
 		880C635519BFD14100E23843 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 880C635419BFD14100E23843 /* Default-Landscape~ipad.png */; };
 		880C635719BFD15300E23843 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 880C635619BFD15300E23843 /* iPad-old@2x.png */; };
-		881521D31981785800AC2E9E /* VisionPack.m in Sources */ = {isa = PBXBuildFile; fileRef = 881521D21981785800AC2E9E /* VisionPack.m */; };
 		882F328619BFD853007EF4A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 882F328519BFD853007EF4A5 /* Images.xcassets */; };
-		883C7D871975A75600B626B4 /* EndScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 883C7D861975A75600B626B4 /* EndScene.m */; };
 		884C14741980436B0078FDAE /* RepulseAsteroid.m in Sources */ = {isa = PBXBuildFile; fileRef = 884C14731980436B0078FDAE /* RepulseAsteroid.m */; };
 		884E6628199AEF98002DE5BC /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 884E6627199AEF98002DE5BC /* GameData.m */; };
 		885468B819706AF000AA122E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885468B719706AF000AA122E /* CoreMotion.framework */; };
@@ -153,16 +153,16 @@
 
 /* Begin PBXFileReference section */
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		88011D61196DBD3100FE3CB8 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gameplay.h; sourceTree = "<group>"; };
-		88011D62196DBD3100FE3CB8 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gameplay.m; sourceTree = "<group>"; };
+		8801108119D90CC0007EB207 /* VisionPack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VisionPack.h; path = Source/VisionPack.h; sourceTree = "<group>"; };
+		8801108319D90CCE007EB207 /* VisionPack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VisionPack.m; path = Source/VisionPack.m; sourceTree = "<group>"; };
+		8801108519D90CDB007EB207 /* Gameplay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Gameplay.h; path = Source/Gameplay.h; sourceTree = "<group>"; };
+		8801108619D90CDF007EB207 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Gameplay.m; path = Source/Gameplay.m; sourceTree = "<group>"; };
+		8801108819D90CE7007EB207 /* EndScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EndScene.m; path = Source/EndScene.m; sourceTree = "<group>"; };
+		8801108A19D90CE9007EB207 /* EndScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EndScene.h; path = Source/EndScene.h; sourceTree = "<group>"; };
 		880C634F19BEA77400E23843 /* Coldnoise Awakening.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Coldnoise Awakening.mp3"; sourceTree = "<group>"; };
 		880C635419BFD14100E23843 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		880C635619BFD15300E23843 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad-old@2x.png"; sourceTree = "<group>"; };
-		881521D11981785800AC2E9E /* VisionPack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisionPack.h; sourceTree = "<group>"; };
-		881521D21981785800AC2E9E /* VisionPack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisionPack.m; sourceTree = "<group>"; };
 		882F328519BFD853007EF4A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = williamtan/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		883C7D851975A75600B626B4 /* EndScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
-		883C7D861975A75600B626B4 /* EndScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndScene.m; sourceTree = "<group>"; };
 		884C14721980436B0078FDAE /* RepulseAsteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepulseAsteroid.h; path = Source/RepulseAsteroid.h; sourceTree = "<group>"; };
 		884C14731980436B0078FDAE /* RepulseAsteroid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepulseAsteroid.m; path = Source/RepulseAsteroid.m; sourceTree = "<group>"; };
 		884E6626199AEF98002DE5BC /* GameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameData.h; path = Source/GameData.h; sourceTree = "<group>"; };
@@ -436,21 +436,21 @@
 				B737893D1807617C0076A88C /* AppDelegate.h */,
 				B737893E1807617C0076A88C /* AppDelegate.m */,
 				B7378992180767190076A88C /* MainScene.h */,
+				8801108819D90CE7007EB207 /* EndScene.m */,
+				8801108A19D90CE9007EB207 /* EndScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
-				883C7D851975A75600B626B4 /* EndScene.h */,
-				883C7D861975A75600B626B4 /* EndScene.m */,
 				884C14721980436B0078FDAE /* RepulseAsteroid.h */,
 				884C14731980436B0078FDAE /* RepulseAsteroid.m */,
 				884E6626199AEF98002DE5BC /* GameData.h */,
-				88011D61196DBD3100FE3CB8 /* Gameplay.h */,
 				884E6627199AEF98002DE5BC /* GameData.m */,
-				88011D62196DBD3100FE3CB8 /* Gameplay.m */,
+				8801108519D90CDB007EB207 /* Gameplay.h */,
 				88A33E1E199968E100B82D13 /* InvinciblePack.h */,
+				8801108619D90CDF007EB207 /* Gameplay.m */,
 				88A33E1F199968E100B82D13 /* InvinciblePack.m */,
 				8898E21C19907FA40066AD4D /* Magnet.h */,
 				8898E21D19907FA40066AD4D /* Magnet.m */,
-				881521D11981785800AC2E9E /* VisionPack.h */,
-				881521D21981785800AC2E9E /* VisionPack.m */,
+				8801108119D90CC0007EB207 /* VisionPack.h */,
+				8801108319D90CCE007EB207 /* VisionPack.m */,
 				88A205D5197205530015925F /* Star.h */,
 				88A205D6197205530015925F /* Star.m */,
 				885468C11970DB0600AA122E /* Settings.h */,
@@ -756,16 +756,16 @@
 				88A205D7197205530015925F /* Star.m in Sources */,
 				884C14741980436B0078FDAE /* RepulseAsteroid.m in Sources */,
 				88FCDD5319757C8D00D3D5EA /* Asteroid1.m in Sources */,
-				88011D63196DBD3100FE3CB8 /* Gameplay.m in Sources */,
+				8801108919D90CE7007EB207 /* EndScene.m in Sources */,
 				884E6628199AEF98002DE5BC /* GameData.m in Sources */,
 				88A33E20199968E100B82D13 /* InvinciblePack.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				885468BC1970751C00AA122E /* Ship.m in Sources */,
 				885468C31970DB0600AA122E /* Settings.m in Sources */,
-				883C7D871975A75600B626B4 /* EndScene.m in Sources */,
+				8801108419D90CCE007EB207 /* VisionPack.m in Sources */,
+				8801108719D90CDF007EB207 /* Gameplay.m in Sources */,
 				88A6E989199EA34D00D92144 /* InvincibleShip.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
-				881521D31981785800AC2E9E /* VisionPack.m in Sources */,
 				8898E21E19907FA40066AD4D /* Magnet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
